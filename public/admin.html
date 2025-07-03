@@ -1,0 +1,1717 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - ระบบจัดการลงเวลา อบต.ข่าใหญ่</title>
+    
+    <!-- PWA Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Admin อบต.ข่าใหญ่">
+    <meta name="description" content="ระบบจัดการลงเวลาออนไลน์ อบต.ข่าใหญ่ - หน้าผู้ดูแลระบบ">
+    <meta name="theme-color" content="#1a237e">
+    
+    <!-- PWA Icons and Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="https://www.huana-nbp.go.th/index/add_file/P0D284NMon35557.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://www.huana-nbp.go.th/index/add_file/P0D284NMon35557.png">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=K2D:wght@300;400;600;700&family=Kanit:wght@300;400;600;700&display=swap');
+        
+        * {
+            font-family: 'K2D', sans-serif;
+        }
+        
+        body {
+            background: #f8f9fa;
+            min-height: 100vh;
+        }
+        
+        /* Sidebar */
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            height: 100vh;
+            width: 260px;
+            background: linear-gradient(180deg, #2c3e50 0%, #34495e 100%);
+            box-shadow: 2px 0 10px rgba(0,0,0,0.1);
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+        
+        .sidebar.collapsed {
+            width: 80px;
+        }
+        
+        .sidebar-header {
+            padding: 20px;
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        
+        .sidebar-header img {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            margin-bottom: 10px;
+        }
+        
+        .sidebar-header h6 {
+            color: white;
+            margin: 0;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        
+        .sidebar-header .org-name {
+            color: #bdc3c7;
+            font-size: 0.75rem;
+            margin-top: 5px;
+        }
+        
+        .sidebar.collapsed .sidebar-header h6,
+        .sidebar.collapsed .sidebar-header .org-name {
+            display: none;
+        }
+        
+        .sidebar-menu {
+            padding: 20px 0;
+        }
+        
+        .menu-item {
+            margin-bottom: 5px;
+        }
+        
+        .menu-link {
+            display: flex;
+            align-items: center;
+            padding: 12px 20px;
+            color: #bdc3c7;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            border-left: 3px solid transparent;
+        }
+        
+        .menu-link:hover,
+        .menu-link.active {
+            color: white;
+            background: rgba(255,255,255,0.1);
+            border-left-color: #3498db;
+        }
+        
+        .menu-link i {
+            width: 20px;
+            margin-right: 15px;
+            text-align: center;
+        }
+        
+        .sidebar.collapsed .menu-link span {
+            display: none;
+        }
+        
+        .sidebar.collapsed .menu-link {
+            justify-content: center;
+            padding: 12px;
+        }
+        
+        .sidebar.collapsed .menu-link i {
+            margin: 0;
+        }
+        
+        /* Main Content */
+        .main-content {
+            margin-left: 260px;
+            transition: all 0.3s ease;
+            min-height: 100vh;
+        }
+        
+        .main-content.expanded {
+            margin-left: 80px;
+        }
+        
+        /* Header */
+        .top-header {
+            background: white;
+            padding: 15px 30px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-left {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+        
+        .sidebar-toggle {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: #6c757d;
+            cursor: pointer;
+        }
+        
+        .page-title {
+            margin: 0;
+            color: #2c3e50;
+            font-weight: 600;
+        }
+        
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        
+        .user-info {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            color: #6c757d;
+        }
+        
+        .user-avatar {
+            width: 35px;
+            height: 35px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: 600;
+        }
+        
+        /* Cards */
+        .stats-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border: none;
+            transition: transform 0.3s ease;
+        }
+        
+        .stats-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .stats-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            color: white;
+            margin-bottom: 15px;
+        }
+        
+        .stats-number {
+            font-size: 2rem;
+            font-weight: 700;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .stats-label {
+            color: #6c757d;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        /* Export Panel */
+        .export-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        
+        .export-title {
+            color: #2c3e50;
+            font-weight: 600;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .export-form {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        
+        .form-group {
+            margin-bottom: 15px;
+        }
+        
+        .form-label {
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+        
+        .form-control, .form-select {
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 10px 15px;
+            transition: border-color 0.3s ease;
+        }
+        
+        .form-control:focus, .form-select:focus {
+            border-color: #667eea;
+            box-shadow: 0 0 0 0.2rem rgba(102, 126, 234, 0.25);
+        }
+        
+        .btn-export {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            border: none;
+            border-radius: 8px;
+            padding: 10px 20px;
+            color: white;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-export:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(40, 167, 69, 0.3);
+            color: white;
+        }
+        
+        /* Working Employees */
+        .working-panel {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            margin-top: 20px;
+        }
+        
+        .employee-item {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+        
+        .employee-info {
+            flex: 1;
+        }
+        
+        .employee-name {
+            font-weight: 600;
+            color: #2c3e50;
+            margin-bottom: 5px;
+        }
+        
+        .employee-time {
+            color: #6c757d;
+            font-size: 0.9rem;
+        }
+          .status-badge {
+            background: linear-gradient(135deg, #28a745, #20c997);
+            color: white;
+            padding: 5px 12px;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        /* Employee Controls */
+        .employee-controls {
+            background: #f8f9fa;
+            padding: 15px;
+            border-radius: 10px;
+            border: 1px solid #e9ecef;
+        }
+        
+        .employee-count {
+            text-align: center;
+            padding: 8px 0;
+        }
+        
+        /* Pagination */
+        #employeePagination .page-link {
+            color: #2c3e50;
+            border-color: #dee2e6;
+        }
+        
+        #employeePagination .page-item.active .page-link {
+            background-color: #2c3e50;
+            border-color: #2c3e50;
+        }
+        
+        #employeePagination .page-link:hover {
+            color: #1a252f;
+            background-color: #e9ecef;
+            border-color: #dee2e6;
+        }
+        
+        /* Employee Item Animation */
+        .employee-item {
+            transition: all 0.3s ease;
+        }
+        
+        .employee-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar {
+                width: 80px;
+            }
+            
+            .main-content {
+                margin-left: 80px;
+            }
+            
+            .sidebar-header h6,
+            .sidebar-header .org-name,
+            .menu-link span {
+                display: none;
+            }
+            
+            .menu-link {
+                justify-content: center;
+                padding: 12px;
+            }
+            
+            .menu-link i {
+                margin: 0;
+            }
+            
+            .top-header {
+                padding: 15px;
+            }
+            
+            .user-info span {
+                display: none;
+            }
+        }
+        
+        /* Loading Animation */
+        .loading {
+            opacity: 0.7;
+            pointer-events: none;
+        }
+        
+        .spinner-border-sm {
+            width: 1rem;
+            height: 1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Sidebar -->
+    <div class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <img src="https://www.huana-nbp.go.th/index/add_file/P0D284NMon35557.png" alt="Logo">
+            <h6>ระบบจัดการลงเวลา</h6>
+            <div class="org-name">อบต.ข่าใหญ่</div>
+        </div>
+        
+        <div class="sidebar-menu">
+            <div class="menu-item">
+                <a href="#dashboard" class="menu-link active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>หน้าหลัก</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="#reports" class="menu-link" data-section="reports">
+                    <i class="fas fa-file-excel"></i>
+                    <span>รายงานและส่งออก</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="#employees" class="menu-link" data-section="employees">
+                    <i class="fas fa-users"></i>
+                    <span>จัดการพนักงาน</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="#settings" class="menu-link" data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    <span>ตั้งค่าระบบ</span>
+                </a>
+            </div>
+            <div class="menu-item">
+                <a href="#" class="menu-link" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                    <span>ออกจากระบบ</span>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="main-content" id="mainContent">
+        <!-- Header -->
+        <div class="top-header">
+            <div class="header-left">
+                <button class="sidebar-toggle" onclick="toggleSidebar()">
+                    <i class="fas fa-bars"></i>
+                </button>
+                <h4 class="page-title" id="pageTitle">หน้าหลัก</h4>
+            </div>
+              <div class="header-right">
+                <div class="user-info">
+                    <small id="currentTime" style="margin-right: 15px; color: #6c757d;"></small>
+                    <div class="user-avatar" id="userAvatar">A</div>
+                    <span id="userName">ผู้ดูแลระบบ</span>
+                </div>
+            </div>
+        </div>
+
+        <!-- Content -->
+        <div class="container-fluid p-4">
+            <!-- Dashboard Section -->
+            <div id="dashboardSection" class="content-section">
+                <!-- Stats Cards -->
+                <div class="row">
+                    <div class="col-md-3 mb-4">
+                        <div class="stats-card">
+                            <div class="stats-icon" style="background: linear-gradient(135deg, #667eea, #764ba2);">
+                                <i class="fas fa-users"></i>
+                            </div>
+                            <div class="stats-number" id="totalEmployees">0</div>
+                            <div class="stats-label">พนักงานทั้งหมด</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 mb-4">
+                        <div class="stats-card">
+                            <div class="stats-icon" style="background: linear-gradient(135deg, #28a745, #20c997);">
+                                <i class="fas fa-user-check"></i>
+                            </div>
+                            <div class="stats-number" id="presentToday">0</div>
+                            <div class="stats-label">มาทำงานวันนี้</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 mb-4">
+                        <div class="stats-card">
+                            <div class="stats-icon" style="background: linear-gradient(135deg, #ffc107, #fd7e14);">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div class="stats-number" id="workingNow">0</div>
+                            <div class="stats-label">กำลังทำงาน</div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-md-3 mb-4">
+                        <div class="stats-card">
+                            <div class="stats-icon" style="background: linear-gradient(135deg, #dc3545, #e74c3c);">
+                                <i class="fas fa-user-times"></i>
+                            </div>
+                            <div class="stats-number" id="absentToday">0</div>
+                            <div class="stats-label">ขาดงานวันนี้</div>
+                        </div>
+                    </div>
+                </div>                <!-- Currently Working Employees -->
+                <div class="working-panel">
+                    <h5 class="export-title">
+                        <i class="fas fa-users-cog"></i>
+                        พนักงานที่กำลังทำงาน
+                    </h5>
+                    
+                    <!-- Employee Filter Controls -->
+                    <div class="employee-controls mb-3">
+                        <div class="row align-items-center">
+                            <div class="col-md-4">
+                                <div class="input-group">
+                                    <span class="input-group-text">
+                                        <i class="fas fa-search"></i>
+                                    </span>
+                                    <input type="text" 
+                                           class="form-control" 
+                                           id="employeeSearch" 
+                                           placeholder="ค้นหาชื่อพนักงาน..."
+                                           onkeyup="filterEmployees()">
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select" id="itemsPerPage" onchange="changeItemsPerPage()">
+                                    <option value="10">แสดง 10 รายการ</option>
+                                    <option value="30" selected>แสดง 30 รายการ</option>
+                                    <option value="50">แสดง 50 รายการ</option>
+                                    <option value="100">แสดง 100 รายการ</option>
+                                    <option value="all">แสดงทั้งหมด</option>
+                                </select>
+                            </div>
+                            <div class="col-md-3">
+                                <select class="form-select" id="sortBy" onchange="sortEmployees()">
+                                    <option value="name">เรียงตามชื่อ</option>
+                                    <option value="clockin">เรียงตามเวลาเข้างาน</option>
+                                    <option value="workinghours">เรียงตามชั่วโมงทำงาน</option>
+                                </select>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="employee-count">
+                                    <small class="text-muted">
+                                        <span id="displayedCount">0</span> / <span id="totalCount">0</span> คน
+                                    </small>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Employee List -->
+                    <div id="workingEmployeesList">
+                        <div class="text-center text-muted">
+                            <i class="fas fa-spinner fa-spin"></i> กำลังโหลดข้อมูล...
+                        </div>
+                    </div>
+                    
+                    <!-- Pagination -->
+                    <div id="employeePagination" class="d-flex justify-content-center mt-3">
+                        <!-- Pagination will be generated here -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Reports Section -->
+            <div id="reportsSection" class="content-section" style="display: none;">
+                <div class="export-panel">
+                    <h5 class="export-title">
+                        <i class="fas fa-file-excel"></i>
+                        ส่งออกรายงานเป็น Excel
+                    </h5>
+                    
+                    <!-- รายงานรายวัน -->
+                    <div class="export-form">
+                        <h6 class="mb-3">
+                            <i class="fas fa-calendar-day"></i>
+                            รายงานรายวัน
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">เลือกวันที่</label>
+                                    <input type="date" class="form-control" id="dailyDate" value="">
+                                </div>
+                            </div>
+                            <div class="col-md-6 d-flex align-items-end">
+                                <div class="form-group">
+                                    <button class="btn-export" onclick="exportDaily()">
+                                        <i class="fas fa-download"></i>
+                                        ส่งออกรายวัน
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                      <!-- รายงานรายเดือน -->
+                    <div class="export-form">
+                        <h6 class="mb-3">
+                            <i class="fas fa-calendar-alt"></i>
+                            รายงานรายเดือน
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">เดือน</label>
+                                    <select class="form-select" id="monthSelect">
+                                        <option value="1">มกราคม</option>
+                                        <option value="2">กุมภาพันธ์</option>
+                                        <option value="3">มีนาคม</option>
+                                        <option value="4">เมษายน</option>
+                                        <option value="5">พฤษภาคม</option>
+                                        <option value="6">มิถุนายน</option>
+                                        <option value="7">กรกฎาคม</option>
+                                        <option value="8">สิงหาคม</option>
+                                        <option value="9">กันยายน</option>
+                                        <option value="10">ตุลาคม</option>
+                                        <option value="11">พฤศจิกายน</option>
+                                        <option value="12">ธันวาคม</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-group">
+                                    <label class="form-label">ปี พ.ศ.</label>
+                                    <select class="form-select" id="yearSelect">
+                                        <!-- ปีจะถูกเพิ่มด้วย JavaScript -->
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label class="form-label">รูปแบบรายงาน</label>
+                                    <select class="form-select" id="reportFormat">
+                                        <option value="detailed">รายงานแบ่งตามวัน (แสดงแต่ละวันชัดเจน)</option>
+                                        <option value="summary">รายงานสรุปเท่านั้น</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-12">
+                                <div class="form-group">
+                                    <button class="btn-export" onclick="exportMonthly()">
+                                        <i class="fas fa-download"></i>
+                                        ส่งออกรายงานรายเดือน
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- รายงานช่วงวันที่ -->
+                    <div class="export-form">
+                        <h6 class="mb-3">
+                            <i class="fas fa-calendar-week"></i>
+                            รายงานช่วงวันที่
+                        </h6>
+                        <div class="row">
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">วันที่เริ่มต้น</label>
+                                    <input type="date" class="form-control" id="startDate">
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-group">
+                                    <label class="form-label">วันที่สิ้นสุด</label>
+                                    <input type="date" class="form-control" id="endDate">
+                                </div>
+                            </div>
+                            <div class="col-md-4 d-flex align-items-end">
+                                <div class="form-group">
+                                    <button class="btn-export" onclick="exportRange()">
+                                        <i class="fas fa-download"></i>
+                                        ส่งออกช่วงวันที่
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Employees Section -->
+            <div id="employeesSection" class="content-section" style="display: none;">
+                <div class="working-panel">
+                    <h5 class="export-title">
+                        <i class="fas fa-users"></i>
+                        จัดการข้อมูลพนักงาน
+                    </h5>
+                    <p class="text-muted">ฟีเจอร์นี้จะพัฒนาในเวอร์ชันถัดไป</p>
+                </div>
+            </div>
+
+            <!-- Settings Section -->
+            <div id="settingsSection" class="content-section" style="display: none;">
+                <div class="working-panel">
+                    <h5 class="export-title">
+                        <i class="fas fa-cog"></i>
+                        ตั้งค่าระบบ
+                    </h5>
+                    <p class="text-muted">ฟีเจอร์นี้จะพัฒนาในเวอร์ชันถัดไป</p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
+    <script>
+        // การตั้งค่าพื้นฐาน
+        const API_BASE_URL = window.location.origin;
+        let currentUser = null;
+        let tokenRefreshTimeout = null;
+        
+        // ตรวจสอบการล็อกอิน
+        function checkAuth() {
+            const token = localStorage.getItem('adminToken');
+            const user = localStorage.getItem('adminUser');
+            
+            if (!token || !user) {
+                window.location.href = '/admin/login';
+                return false;
+            }
+            
+            try {
+                currentUser = JSON.parse(user);
+                document.getElementById('userName').textContent = currentUser.name || 'ผู้ดูแลระบบ';
+                document.getElementById('userAvatar').textContent = (currentUser.name || 'A').charAt(0).toUpperCase();
+                
+                // ตั้งค่า auto token refresh
+                setupTokenRefresh();
+                
+                return true;
+            } catch (error) {
+                console.error('Error parsing user data:', error);
+                logout();
+                return false;
+            }
+        }
+        
+        // ตั้งค่าการต่ออายุ token อัตโนมัติ
+        function setupTokenRefresh() {
+            // ล้าง timeout เดิม
+            if (tokenRefreshTimeout) {
+                clearTimeout(tokenRefreshTimeout);
+            }
+            
+            // ตั้งเวลาให้ refresh token ทุก 20 ชั่วโมง (ก่อนหมดอายุ 4 ชั่วโมง)
+            tokenRefreshTimeout = setTimeout(async () => {
+                await refreshToken();
+            }, 20 * 60 * 60 * 1000); // 20 hours
+        }
+        
+        // ฟังก์ชันต่ออายุ token
+        async function refreshToken() {
+            try {
+                const token = localStorage.getItem('adminToken');
+                if (!token) {
+                    throw new Error('No token available');
+                }
+                
+                console.log('🔄 Attempting to refresh token...');
+                
+                const response = await fetch(`${API_BASE_URL}/api/admin/refresh-token`, {
+                    method: 'POST',
+                    headers: {
+                        'Authorization': `Bearer ${token}`,
+                        'Content-Type': 'application/json'
+                    }
+                });
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    // บันทึก token ใหม่
+                    localStorage.setItem('adminToken', result.token);
+                    localStorage.setItem('adminUser', JSON.stringify(result.user));
+                    
+                    console.log('✅ Token refreshed successfully');
+                    
+                    // ตั้งค่า auto refresh ครั้งต่อไป
+                    setupTokenRefresh();
+                    
+                    // แสดงการแจ้งเตือนแบบเงียบๆ
+                    showQuietNotification('🔄 ระบบต่ออายุการเข้าสู่ระบบอัตโนมัติแล้ว');
+                    
+                } else {
+                    throw new Error(result.error || 'Failed to refresh token');
+                }
+                
+            } catch (error) {
+                console.error('Token refresh failed:', error);
+                
+                // หาก token หมดอายุนานเกินไป หรือมีปัญหาอื่น
+                if (error.message.includes('expired too long') || error.message.includes('invalid')) {
+                    Swal.fire({
+                        title: 'หมดอายุการเข้าสู่ระบบ',
+                        text: 'เซสชันของคุณหมดอายุแล้ว กรุณาเข้าสู่ระบบใหม่',
+                        icon: 'warning',
+                        confirmButtonText: 'เข้าสู่ระบบใหม่',
+                        allowOutsideClick: false
+                    }).then(() => {
+                        logout();
+                    });
+                } else {
+                    // พยายาม refresh อีกครั้งหลัง 5 นาที
+                    setTimeout(() => refreshToken(), 5 * 60 * 1000);
+                }
+            }
+        }
+        
+        // แสดงการแจ้งเตือนแบบเงียบๆ
+        function showQuietNotification(message) {
+            // สร้าง toast notification เงียบๆ
+            const toast = document.createElement('div');
+            toast.style.cssText = `
+                position: fixed;
+                top: 80px;
+                right: 20px;
+                background: #28a745;
+                color: white;
+                padding: 10px 15px;
+                border-radius: 5px;
+                font-size: 0.9rem;
+                z-index: 9999;
+                opacity: 0;
+                transition: opacity 0.3s ease;
+                box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            `;
+            toast.textContent = message;
+            document.body.appendChild(toast);
+            
+            // แสดง toast
+            setTimeout(() => toast.style.opacity = '1', 100);
+            
+            // ซ่อน toast หลัง 3 วินาที
+            setTimeout(() => {
+                toast.style.opacity = '0';
+                setTimeout(() => document.body.removeChild(toast), 300);
+            }, 3000);
+        }
+        
+        // ปรับปรุงฟังก์ชัน API call ให้จัดการ token หมดอายุ
+        async function makeApiCall(url, options = {}) {
+            const token = localStorage.getItem('adminToken');
+            
+            const defaultOptions = {
+                headers: {
+                    'Authorization': `Bearer ${token}`,
+                    'Content-Type': 'application/json',
+                    ...options.headers
+                },
+                ...options
+            };
+            
+            try {
+                const response = await fetch(url, defaultOptions);
+                
+                // ตรวจสอบ token หมดอายุ
+                if (response.status === 401) {
+                    const errorData = await response.json().catch(() => ({}));
+                    
+                    if (errorData.errorCode === 'TOKEN_EXPIRED') {
+                        console.log('🔄 Token expired, attempting refresh...');
+                        
+                        const refreshSuccess = await refreshToken();
+                        if (refreshSuccess) {
+                            // ลองเรียก API อีกครั้งด้วย token ใหม่
+                            const newToken = localStorage.getItem('adminToken');
+                            defaultOptions.headers.Authorization = `Bearer ${newToken}`;
+                            return await fetch(url, defaultOptions);
+                        }
+                    }
+                    
+                    // หาก refresh ไม่สำเร็จ ให้ redirect ไป login
+                    Swal.fire({
+                        title: 'หมดอายุการเข้าสู่ระบบ',
+                        text: 'กรุณาเข้าสู่ระบบใหม่',
+                        icon: 'warning',
+                        confirmButtonText: 'ตกลง'
+                    }).then(() => {
+                        logout();
+                    });
+                    
+                    throw new Error('Authentication failed');
+                }
+                
+                return response;
+                
+            } catch (error) {
+                console.error('API call failed:', error);
+                throw error;
+            }
+        }
+        
+        // Toggle Sidebar
+        function toggleSidebar() {
+            const sidebar = document.getElementById('sidebar');
+            const mainContent = document.getElementById('mainContent');
+            
+            sidebar.classList.toggle('collapsed');
+            mainContent.classList.toggle('expanded');
+        }
+        
+        // Navigation
+        function showSection(sectionId) {
+            // ซ่อนทุก section
+            document.querySelectorAll('.content-section').forEach(section => {
+                section.style.display = 'none';
+            });
+            
+            // แสดง section ที่เลือก
+            document.getElementById(sectionId + 'Section').style.display = 'block';
+            
+            // อัพเดท active menu
+            document.querySelectorAll('.menu-link').forEach(link => {
+                link.classList.remove('active');
+            });
+            document.querySelector(`[data-section="${sectionId}"]`).classList.add('active');
+            
+            // อัพเดท page title
+            const titles = {
+                dashboard: 'หน้าหลัก',
+                reports: 'รายงานและส่งออก',
+                employees: 'จัดการพนักงาน',
+                settings: 'ตั้งค่าระบบ'
+            };
+            document.getElementById('pageTitle').textContent = titles[sectionId];
+        }
+        
+        // Event listeners สำหรับเมนู
+        document.querySelectorAll('.menu-link[data-section]').forEach(link => {
+            link.addEventListener('click', function(e) {
+                e.preventDefault();
+                const section = this.getAttribute('data-section');
+                showSection(section);
+            });
+        });
+          // โหลดข้อมูลสถิติ
+        async function loadStats() {
+            try {
+                const response = await makeApiCall(`${API_BASE_URL}/api/admin/stats`);
+                
+                if (!response.ok) {
+                    throw new Error('Failed to load stats');
+                }
+                
+                const result = await response.json();
+                
+                if (result.success) {
+                    const stats = result.data;
+                    document.getElementById('totalEmployees').textContent = stats.totalEmployees || 0;
+                    document.getElementById('presentToday').textContent = stats.presentToday || 0;
+                    document.getElementById('workingNow').textContent = stats.workingNow || 0;
+                    document.getElementById('absentToday').textContent = stats.absentToday || 0;
+                    
+                    // Debug: แสดงข้อมูลที่ได้รับจาก server
+                    console.log('📊 Stats data from server:', stats);
+                    if (stats.workingEmployees) {
+                        console.log('👥 Working employees raw data:', stats.workingEmployees);
+                    }
+                    
+                    // โหลดรายชื่อพนักงานที่กำลังทำงาน
+                    loadWorkingEmployees(stats.workingEmployees || []);
+                }
+                
+            } catch (error) {
+                console.error('Error loading stats:', error);
+                
+                // แสดงข้อผิดพลาดในรูปแบบที่เป็นมิตร
+                if (error.message === 'Authentication failed') {
+                    // จัดการโดย makeApiCall แล้ว
+                    return;
+                }
+                
+                // แสดงข้อผิดพลาดอื่นๆ
+                showQuietNotification('⚠️ ไม่สามารถโหลดข้อมูลได้ กำลังลองใหม่...');
+                
+                // ลองโหลดใหม่หลัง 10 วินาที
+                setTimeout(loadStats, 10000);
+            }
+        }
+          // ฟังก์ชันจัดการเวลาให้แสดงเป็นเวลาไทย
+        function formatThaiTime(timeString) {
+            if (!timeString) return '-';
+            
+            try {
+                // ถ้าเป็นรูปแบบ HH:mm ที่ส่งมาจาก server แล้ว
+                if (typeof timeString === 'string' && timeString.match(/^\d{2}:\d{2}$/)) {
+                    return timeString;
+                }
+                
+                // ถ้าเป็นรูปแบบ 'YYYY-MM-DD HH:mm:ss' (จาก moment)
+                if (typeof timeString === 'string' && timeString.includes(' ') && timeString.length === 19) {
+                    const timePart = timeString.split(' ')[1];
+                    return timePart.substring(0, 5); // เอาแค่ HH:mm
+                }
+                
+                // ถ้ามี ' น.' ต่อท้ายอยู่แล้ว
+                if (timeString.includes(' น.')) {
+                    return timeString;
+                }
+                
+                // ลองแปลงเป็น Date object
+                const date = new Date(timeString);
+                if (!isNaN(date.getTime())) {
+                    return date.toLocaleTimeString('th-TH', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        timeZone: 'Asia/Bangkok'
+                    });
+                }
+                
+                // ถ้าเป็น Date object
+                if (timeString instanceof Date) {
+                    return timeString.toLocaleTimeString('th-TH', {
+                        hour: '2-digit',
+                        minute: '2-digit',
+                        timeZone: 'Asia/Bangkok'
+                    });
+                }
+                
+                return timeString;
+            } catch (error) {
+                console.error('Error formatting time:', error);
+                return timeString || '-';
+            }
+        }
+
+        // ฟังก์ชันจัดการวันที่เป็นไทย
+        function formatThaiDate(dateString) {
+            if (!dateString) return '';
+            
+            try {
+                const date = new Date(dateString);
+                if (isNaN(date.getTime())) return dateString;
+                
+                return date.toLocaleDateString('th-TH', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    timeZone: 'Asia/Bangkok'
+                });
+            } catch (error) {
+                console.error('Error formatting date:', error);
+                return dateString;
+            }
+        }        // โหลดรายชื่อพนักงานที่กำลังทำงาน
+        let allWorkingEmployees = []; // เก็บข้อมูลพนักงานทั้งหมด
+        let filteredEmployees = []; // เก็บข้อมูลหลังกรอง
+        let currentPage = 1;
+        let itemsPerPageValue = 30;
+        
+        function loadWorkingEmployees(employees) {
+            allWorkingEmployees = [...employees];
+            filteredEmployees = [...employees];
+            
+            updateEmployeeCount();
+            displayEmployees();
+        }
+        
+        function updateEmployeeCount() {
+            document.getElementById('totalCount').textContent = allWorkingEmployees.length;
+        }
+        
+        function displayEmployees() {
+            const container = document.getElementById('workingEmployeesList');
+            
+            if (filteredEmployees.length === 0) {
+                container.innerHTML = `
+                    <div class="text-center text-muted">
+                        <i class="fas fa-user-clock"></i>
+                        <p>ไม่มีพนักงานที่กำลังทำงานในขณะนี้</p>
+                    </div>
+                `;
+                document.getElementById('displayedCount').textContent = '0';
+                document.getElementById('employeePagination').innerHTML = '';
+                return;
+            }
+            
+            // คำนวณ pagination
+            const startIndex = (currentPage - 1) * itemsPerPageValue;
+            const endIndex = itemsPerPageValue === 'all' ? filteredEmployees.length : startIndex + itemsPerPageValue;
+            const currentEmployees = filteredEmployees.slice(startIndex, endIndex);
+            
+            // แสดงรายการพนักงาน
+            const html = currentEmployees.map(emp => {
+                const clockInTime = formatThaiTime(emp.clockIn);
+                
+                return `
+                    <div class="employee-item">
+                        <div class="employee-info">
+                            <div class="employee-name">${emp.name}</div>
+                            <div class="employee-time">
+                                <i class="fas fa-clock"></i>
+                                เข้างาน: ${clockInTime} | ทำงานแล้ว: ${emp.workingHours}
+                            </div>
+                        </div>
+                        <div class="status-badge">
+                            <i class="fas fa-circle"></i>
+                            ทำงาน
+                        </div>
+                    </div>
+                `;
+            }).join('');
+            
+            container.innerHTML = html;
+            
+            // อัปเดตจำนวนที่แสดง
+            document.getElementById('displayedCount').textContent = currentEmployees.length;
+            
+            // สร้าง pagination
+            if (itemsPerPageValue !== 'all') {
+                generatePagination();
+            } else {
+                document.getElementById('employeePagination').innerHTML = '';
+            }
+        }
+        
+        function generatePagination() {
+            const totalPages = Math.ceil(filteredEmployees.length / itemsPerPageValue);
+            const paginationContainer = document.getElementById('employeePagination');
+            
+            if (totalPages <= 1) {
+                paginationContainer.innerHTML = '';
+                return;
+            }
+            
+            let html = '<nav><ul class="pagination">';
+            
+            // Previous button
+            html += `
+                <li class="page-item ${currentPage === 1 ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage - 1})">
+                        <i class="fas fa-chevron-left"></i>
+                    </a>
+                </li>
+            `;
+            
+            // Page numbers
+            const startPage = Math.max(1, currentPage - 2);
+            const endPage = Math.min(totalPages, currentPage + 2);
+            
+            if (startPage > 1) {
+                html += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(1)">1</a></li>`;
+                if (startPage > 2) {
+                    html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                }
+            }
+            
+            for (let i = startPage; i <= endPage; i++) {
+                html += `
+                    <li class="page-item ${i === currentPage ? 'active' : ''}">
+                        <a class="page-link" href="#" onclick="changePage(${i})">${i}</a>
+                    </li>
+                `;
+            }
+            
+            if (endPage < totalPages) {
+                if (endPage < totalPages - 1) {
+                    html += `<li class="page-item disabled"><span class="page-link">...</span></li>`;
+                }
+                html += `<li class="page-item"><a class="page-link" href="#" onclick="changePage(${totalPages})">${totalPages}</a></li>`;
+            }
+            
+            // Next button
+            html += `
+                <li class="page-item ${currentPage === totalPages ? 'disabled' : ''}">
+                    <a class="page-link" href="#" onclick="changePage(${currentPage + 1})">
+                        <i class="fas fa-chevron-right"></i>
+                    </a>
+                </li>
+            `;
+            
+            html += '</ul></nav>';
+            paginationContainer.innerHTML = html;
+        }
+        
+        function changePage(page) {
+            const totalPages = Math.ceil(filteredEmployees.length / itemsPerPageValue);
+            if (page < 1 || page > totalPages) return;
+            
+            currentPage = page;
+            displayEmployees();
+        }
+        
+        function changeItemsPerPage() {
+            const select = document.getElementById('itemsPerPage');
+            itemsPerPageValue = select.value === 'all' ? 'all' : parseInt(select.value);
+            currentPage = 1;
+            displayEmployees();
+        }
+        
+        function filterEmployees() {
+            const searchTerm = document.getElementById('employeeSearch').value.toLowerCase();
+            
+            filteredEmployees = allWorkingEmployees.filter(emp => 
+                emp.name.toLowerCase().includes(searchTerm)
+            );
+            
+            currentPage = 1;
+            displayEmployees();
+        }
+        
+        function sortEmployees() {
+            const sortBy = document.getElementById('sortBy').value;
+            
+            filteredEmployees.sort((a, b) => {
+                switch (sortBy) {
+                    case 'name':
+                        return a.name.localeCompare(b.name, 'th');
+                    case 'clockin':
+                        return a.clockIn.localeCompare(b.clockIn);
+                    case 'workinghours':
+                        const aHours = parseFloat(a.workingHours.replace(' ชม.', ''));
+                        const bHours = parseFloat(b.workingHours.replace(' ชม.', ''));
+                        return bHours - aHours; // เรียงจากมากไปน้อย
+                    default:
+                        return 0;
+                }
+            });
+            
+            currentPage = 1;
+            displayEmployees();
+        }
+        
+        // ฟังก์ชัน Export
+        async function exportDaily() {
+            const date = document.getElementById('dailyDate').value;
+            if (!date) {
+                Swal.fire({
+                    title: 'โปรดเลือกวันที่',
+                    text: 'กรุณาเลือกวันที่ที่ต้องการสร้างรายงาน',
+                    icon: 'warning'
+                });
+                return;
+            }
+            
+            // ตรวจสอบวันที่ไม่เกินวันปัจจุบัน
+            const selectedDate = new Date(date);
+            const today = new Date();
+            today.setHours(23, 59, 59, 999); // ให้เลือกได้ถึงวันปัจจุบัน
+            
+            if (selectedDate > today) {
+                Swal.fire({
+                    title: 'วันที่ไม่ถูกต้อง',
+                    text: 'ไม่สามารถสร้างรายงานสำหรับวันที่ในอนาคตได้',
+                    icon: 'warning'
+                });
+                return;
+            }
+            
+            await downloadReport('daily', { date });
+        }
+        async function exportMonthly() {
+            const month = document.getElementById('monthSelect').value;
+            const year = document.getElementById('yearSelect').value;
+            const format = document.getElementById('reportFormat').value;
+            
+            if (!month || !year) {
+                Swal.fire({
+                    title: 'ข้อมูลไม่ครบถ้วน',
+                    text: 'กรุณาเลือกเดือนและปีที่ต้องการสร้างรายงาน',
+                    icon: 'warning'
+                });
+                return;
+            }
+            
+            // ตรวจสอบไม่ให้เลือกเดือนในอนาคต
+            const selectedDate = new Date(parseInt(year), parseInt(month) - 1, 1);
+            const today = new Date();
+            const currentMonth = new Date(today.getFullYear(), today.getMonth(), 1);
+            
+            if (selectedDate > currentMonth) {
+                Swal.fire({
+                    title: 'เดือน/ปี ไม่ถูกต้อง',
+                    text: 'ไม่สามารถสร้างรายงานสำหรับเดือนในอนาคตได้',
+                    icon: 'warning'
+                });
+                return;
+            }
+            
+            // ส่ง format parameter ไปใน query string เพื่อให้ backend สร้างรายงานตามรูปแบบที่เลือก
+            await downloadReport('monthly', { month, year, format });
+        }
+        
+        async function exportRange() {
+            const startDate = document.getElementById('startDate').value;
+            const endDate = document.getElementById('endDate').value;
+            
+            if (!startDate || !endDate) {
+                Swal.fire({
+                    title: 'ข้อมูลไม่ครบถ้วน',
+                    text: 'กรุณาเลือกวันที่เริ่มต้นและวันที่สิ้นสุดที่ต้องการสร้างรายงาน',
+                    icon: 'warning'
+                });
+                return;
+            }
+            
+            if (startDate > endDate) {
+                Swal.fire({
+                    title: 'วันที่ไม่ถูกต้อง',
+                    text: 'วันที่เริ่มต้นต้องไม่เกินวันที่สิ้นสุด',
+                    icon: 'warning'
+                });
+                return;
+            }
+            
+            // ตรวจสอบช่วงวันที่ไม่เกิน 366 วัน (1 ปี)
+            const start = new Date(startDate);
+            const end = new Date(endDate);
+            const diffDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+            
+            if (diffDays > 366) {
+                Swal.fire({
+                    title: 'ช่วงวันที่มากเกินไป',
+                    text: 'กรุณาเลือกช่วงวันที่ไม่เกิน 1 ปี เพื่อประสิทธิภาพในการสร้างรายงาน',
+                    icon: 'warning'
+                });
+                return;
+            }
+            
+            // ตรวจสอบวันที่ไม่เกินวันปัจจุบัน
+            const today = new Date();
+            today.setHours(23, 59, 59, 999);
+            
+            if (end > today) {
+                Swal.fire({
+                    title: 'วันที่ไม่ถูกต้อง',
+                    text: 'ไม่สามารถสร้างรายงานสำหรับวันที่ในอนาคตได้',
+                    icon: 'warning'
+                });
+                return;
+            }
+            
+            await downloadReport('range', { startDate, endDate });
+        }
+        
+        // ดาวน์โหลดรายงาน
+        async function downloadReport(type, params) {
+            try {
+                // แสดง loading พร้อมข้อมูลที่กำลังประมวลผล
+                const loadingTitle = getLoadingTitle(type, params);
+                Swal.fire({
+                    title: 'กำลังสร้างรายงาน...',
+                    html: `${loadingTitle}<br><small class="text-muted">โปรดรอสักครู่ ระบบกำลังดึงข้อมูลและสร้างไฟล์ Excel</small>`,
+                    allowOutsideClick: false,
+                    showConfirmButton: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+                
+                const token = localStorage.getItem('adminToken');
+                if (!token) {
+                    throw new Error('ไม่พบ Token การเข้าสู่ระบบ');
+                }
+                
+                const queryString = new URLSearchParams(params).toString();
+                
+                const response = await makeApiCall(`${API_BASE_URL}/api/admin/export/${type}?${queryString}`);
+                
+                if (!response.ok) {
+                    const errorData = await response.json().catch(() => null);
+                    throw new Error(errorData?.error || `HTTP ${response.status}: ${response.statusText}`);
+                }
+                
+                // ตรวจสอบ Content-Type
+                const contentType = response.headers.get('content-type');
+                if (!contentType || !contentType.includes('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')) {
+                    throw new Error('ไฟล์ที่ได้รับไม่ใช่ไฟล์ Excel ที่ถูกต้อง');
+                }
+                
+                // ดาวน์โหลดไฟล์
+                const blob = await response.blob();
+                const url = window.URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                
+                // ตั้งชื่อไฟล์
+                const filename = getFilename(type, params);
+                a.download = filename;
+                
+                document.body.appendChild(a);
+                a.click();
+                window.URL.revokeObjectURL(url);
+                document.body.removeChild(a);
+                
+                // แสดงผลสำเร็จพร้อมรายละเอียด
+                Swal.fire({
+                    icon: 'success',
+                    title: 'ส่งออกรายงานสำเร็จ!',
+                    html: getSuccessMessage(type, params, filename),
+                    timer: 4000,
+                    showConfirmButton: true,
+                    confirmButtonText: 'ตกลง'
+                });
+                
+            } catch (error) {
+                console.error('Export error:', error);
+                Swal.fire({
+                    icon: 'error',
+                    title: 'เกิดข้อผิดพลาดในการส่งออกรายงาน',
+                    html: `
+                        <div style="text-align: left;">
+                            <p><strong>รายละเอียดข้อผิดพลาด:</strong></p>
+                            <p class="text-danger">${error.message}</p>
+                            <hr>
+                            <p><strong>แนวทางแก้ไข:</strong></p>
+                            <ul>
+                                <li>ตรวจสอบการเชื่อมต่ออินเทอร์เน็ต</li>
+                                <li>ลองเข้าสู่ระบบใหม่</li>
+                                <li>ตรวจสอบว่าข้อมูลในช่วงที่เลือกมีอยู่จริง</li>
+                                <li>ลองเลือกช่วงวันที่ที่น้อยกว่า</li>
+                            </ul>
+                        </div>
+                    `,
+                    showConfirmButton: true,
+                    confirmButtonText: 'ตกลง'
+                });
+            }
+        }
+        
+        // ฟังก์ชันช่วยเหลือสำหรับ Export
+        function getLoadingTitle(type, params) {
+            switch (type) {
+                case 'daily':
+                    return `กำลังสร้างรายงานรายวัน: ${formatDateThai(params.date)}`;
+                case 'monthly':
+                    const monthNames = [
+                        'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+                        'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+                    ];
+                    return `กำลังสร้างรายงานรายเดือน: ${monthNames[params.month-1]} ${parseInt(params.year)+543}`;
+                case 'range':
+                    return `กำลังสร้างรายงานช่วงวันที่: ${formatDateThai(params.startDate)} - ${formatDateThai(params.endDate)}`;
+                default:
+                    return 'กำลังสร้างรายงาน';
+            }
+        }
+        
+        function getSuccessMessage(type, params, filename) {
+            const details = getReportDetails(type, params);
+            return `
+                <div style="text-align: left;">
+                    <p><strong>ไฟล์:</strong> ${filename}</p>
+                    <p><strong>ประเภทรายงาน:</strong> ${details.title}</p>
+                    <p><strong>ช่วงข้อมูล:</strong> ${details.period}</p>
+                    <hr>
+                    <p><strong>คุณสมบัติรายงาน:</strong></p>
+                    <ul>
+                        <li>ข้อมูลเวลาเข้า-ออกงาน</li>
+                        <li>การคำนวณชั่วโมงทำงาน</li>
+                        <li>สถิติการทำงาน</li>
+                        <li>เน้นสีแยกแยะสถานะต่างๆ</li>
+                        <li>ส่วนหัวและส่วนท้ายรายงาน</li>
+                    </ul>
+                </div>
+            `;
+        }
+        
+        function getReportDetails(type, params) {
+            switch (type) {
+                case 'daily':
+                    return {
+                        title: 'รายงานรายวัน',
+                        period: formatDateThai(params.date)
+                    };
+                case 'monthly':
+                    const monthNames = [
+                        'มกราคม', 'กุมภาพันธ์', 'มีนาคม', 'เมษายน', 'พฤษภาคม', 'มิถุนายน',
+                        'กรกฎาคม', 'สิงหาคม', 'กันยายน', 'ตุลาคม', 'พฤศจิกายน', 'ธันวาคม'
+                    ];
+                    return {
+                        title: 'รายงานรายเดือน',
+                        period: `${monthNames[params.month-1]} ${parseInt(params.year)+543}`
+                    };
+                case 'range':
+                    return {
+                        title: 'รายงานช่วงวันที่',
+                        period: `${formatDateThai(params.startDate)} ถึง ${formatDateThai(params.endDate)}`
+                    };
+                default:
+                    return { title: 'รายงาน', period: 'ไม่ระบุ' };
+            }
+        }
+        
+        function formatDateThai(dateString) {
+            const date = new Date(dateString);
+            return date.toLocaleDateString('th-TH', {
+                year: 'numeric',
+                month: 'long',
+                day: 'numeric',
+                timeZone: 'Asia/Bangkok'
+            });
+        }
+        
+        // สร้างชื่อไฟล์
+        function getFilename(type, params) {
+            const now = new Date();
+            const thaiDate = now.toLocaleDateString('th-TH', { 
+                timeZone: 'Asia/Bangkok',
+                year: 'numeric',
+                month: '2-digit',
+                day: '2-digit'
+            }).replace(/\//g, '');
+            const thaiTime = now.toLocaleTimeString('th-TH', { 
+                timeZone: 'Asia/Bangkok',
+                hour: '2-digit',
+                minute: '2-digit'
+            }).replace(/:/g, '');
+            
+            const timestamp = `${thaiDate}_${thaiTime}`;
+            
+            switch (type) {
+                case 'daily':
+                    const dailyDate = new Date(params.date).toLocaleDateString('th-TH', { 
+                        timeZone: 'Asia/Bangkok',
+                        year: 'numeric',
+                        month: '2-digit',
+                        day: '2-digit'
+                    }).replace(/\//g, '');
+                    return `รายงานรายวัน_${dailyDate}_${timestamp}.xlsx`;
+                    
+                case 'monthly':
+                    const monthNames = [
+                        'ม.ค.', 'ก.พ.', 'มี.ค.', 'เม.ย.', 'พ.ค.', 'มิ.ย.',
+                        'ก.ค.', 'ส.ค.', 'ก.ย.', 'ต.ค.', 'พ.ย.', 'ธ.ค.'
+                    ];
+                    const yearBE = parseInt(params.year) + 543;
+                    const formatSuffix = params.format === 'detailed' ? '_แบ่งวันชัดเจน' : '';
+                    return `รายงานรายเดือน_${monthNames[params.month-1]}${yearBE}${formatSuffix}_${timestamp}.xlsx`;
+                    
+                case 'range':
+                    const startDate = new Date(params.startDate).toLocaleDateString('th-TH', { 
+                        timeZone: 'Asia/Bangkok',
+                        month: '2-digit',
+                        day: '2-digit'
+                    }).replace(/\//g, '');
+                    const endDate = new Date(params.endDate).toLocaleDateString('th-TH', { 
+                        timeZone: 'Asia/Bangkok',
+                        month: '2-digit',
+                        day: '2-digit'
+                    }).replace(/\//g, '');
+                    return `รายงานช่วงวันที่_${startDate}-${endDate}_${timestamp}.xlsx`;
+                    
+                default:
+                    return `รายงาน_${timestamp}.xlsx`;
+            }
+        }
+        
+        // ออกจากระบบ
+        function logout() {
+            Swal.fire({
+                title: 'ออกจากระบบ?',
+                text: 'คุณต้องการออกจากระบบใช่หรือไม่?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'ออกจากระบบ',
+                cancelButtonText: 'ยกเลิก',
+                confirmButtonColor: '#dc3545'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // ล้าง token refresh timeout
+                    if (tokenRefreshTimeout) {
+                        clearTimeout(tokenRefreshTimeout);
+                        tokenRefreshTimeout = null;
+                    }
+                    
+                    // ล้างข้อมูลการล็อกอิน
+                    localStorage.removeItem('adminToken');
+                    localStorage.removeItem('adminUser');
+                    
+                    // redirect ไปหน้า login
+                    window.location.href = '/admin/login';
+                }
+            });
+        }          // เตรียมข้อมูลเริ่มต้น
+        function initializePage() {
+            // ใช้เวลาไทยโดยตรง
+            const today = new Date();
+            
+            // ตั้งวันที่เริ่มต้นให้เป็นเวลาไทย
+            const dateString = today.toLocaleDateString('en-CA', { timeZone: 'Asia/Bangkok' }); // YYYY-MM-DD format
+            document.getElementById('dailyDate').value = dateString;
+            
+            // ตั้งเดือนและปีปัจจุบันตามเวลาไทย  
+            const thaiMonth = today.toLocaleDateString('th-TH', { 
+                month: 'numeric', 
+                timeZone: 'Asia/Bangkok' 
+            });
+            const thaiYear = today.toLocaleDateString('en-CA', { 
+                year: 'numeric', 
+                timeZone: 'Asia/Bangkok' 
+            });
+            
+            document.getElementById('monthSelect').value = parseInt(thaiMonth);
+            
+            // สร้างรายการปี
+            const yearSelect = document.getElementById('yearSelect');
+            const currentYear = parseInt(thaiYear); // ใช้ปี ค.ศ. จาก en-CA
+            for (let year = currentYear; year >= currentYear - 5; year--) {
+                const option = document.createElement('option');
+                option.value = year; // เก็บเป็น ค.ศ. สำหรับส่งไป backend
+                option.textContent = (year + 543) + ' (พ.ศ.)'; // แสดงเป็น พ.ศ. ให้ผู้ใช้เห็น
+                if (year === currentYear) option.selected = true;
+                yearSelect.appendChild(option);
+            }
+            
+            // ตั้งช่วงวันที่ (สัปดาห์นี้) ตามเวลาไทย
+            const startOfWeek = new Date(dateString);
+            const dayOfWeek = startOfWeek.getDay();
+            startOfWeek.setDate(startOfWeek.getDate() - dayOfWeek);
+            
+            const endOfWeek = new Date(startOfWeek);
+            endOfWeek.setDate(startOfWeek.getDate() + 6);
+            
+            document.getElementById('startDate').value = startOfWeek.toISOString().split('T')[0];
+            document.getElementById('endDate').value = endOfWeek.toISOString().split('T')[0];
+        }          // ฟังก์ชันอัปเดตเวลาปัจจุบัน
+        function updateCurrentTime() {
+            const now = new Date();
+            
+            // ใช้ timezone Bangkok โดยตรง ไม่ต้องบวก 7 ชั่วโมงด้วยตัวเอง
+            const timeString = now.toLocaleTimeString('th-TH', {
+                hour: '2-digit',
+                minute: '2-digit',
+                second: '2-digit',
+                timeZone: 'Asia/Bangkok'
+            });
+            
+            const dateString = now.toLocaleDateString('th-TH', {
+                year: 'numeric',
+                month: 'short',
+                day: 'numeric',
+                timeZone: 'Asia/Bangkok'
+            });
+            
+            const timeElement = document.getElementById('currentTime');
+            if (timeElement) {
+                timeElement.innerHTML = `<i class="fas fa-clock"></i> ${dateString} ${timeString}`;
+            }
+        }
+
+        // ...existing code...
+        
+        // เริ่มต้นเมื่อโหลดหน้า
+        document.addEventListener('DOMContentLoaded', function() {
+            if (checkAuth()) {
+                initializePage();
+                loadStats();
+                updateCurrentTime();
+                
+                // รีเฟรชข้อมูลทุก 30 วินาที
+                setInterval(loadStats, 30000);
+                // อัปเดตเวลาทุกวินาที
+                setInterval(updateCurrentTime, 1000);
+            }
+            
+            // ลงทะเบียน Service Worker สำหรับ PWA
+            if ('serviceWorker' in navigator) {
+                navigator.serviceWorker.register('/sw.js')
+                    .then(function(registration) {
+                        console.log('🔧 Service Worker ลงทะเบียนสำเร็จ:', registration.scope);
+                        
+                        // ตรวจสอบการอัปเดต Service Worker
+                        registration.addEventListener('updatefound', function() {
+                            const newWorker = registration.installing;
+                            newWorker.addEventListener('statechange', function() {
+                                if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                    console.log('🔄 มี Service Worker เวอร์ชันใหม่ พร้อมใช้งาน');
+                                }
+                            });
+                        });
+                    })
+                    .catch(function(error) {
+                        console.error('❌ การลงทะเบียน Service Worker ล้มเหลว:', error);
+                    });
+            }
+        });
+    </script>
+</body>
+</html>

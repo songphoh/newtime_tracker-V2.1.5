@@ -1,0 +1,2189 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="google-adsense-account" content="ca-pub-1797172064583364">
+    
+    <!-- PWA Meta Tags -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="ลงเวลา อบต.ข่าใหญ่">
+    <meta name="description" content="ระบบจัดการลงเวลาเข้า-ออกงาน องค์การบริหารส่วนตำบลข่าใหญ่">
+    <meta name="theme-color" content="#007bff">
+    
+    <!-- PWA Icons and Manifest -->
+    <link rel="manifest" href="/manifest.json">
+    <link rel="icon" href="https://www.huana-nbp.go.th/index/add_file/P0D284NMon35557.png" type="image/png">
+    <link rel="apple-touch-icon" href="https://www.huana-nbp.go.th/index/add_file/P0D284NMon35557.png">
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- ****** Auto Complete ********* -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.2/themes/ui-lightness/jquery-ui.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.13.2/jquery-ui.min.js"></script>    <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <!-- Google AdSense - DISABLED -->
+    <!-- 
+    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-1797172064583364"
+         crossorigin="anonymous"></script>
+    -->
+
+    <title>ระบบลงเวลาออนไลน์ อบต.ข่าใหญ่</title>
+
+    <!-- ****** Style CSS ********* -->
+    <style>
+        input#employee {
+            width: 282px;
+            height: 60px;
+            background-color: brown;
+            color: yellow;
+            margin-block-start: 5px;
+            border-radius: 36px;
+            font-size: 20px;
+        }
+
+        div#showtxt {
+            font-size: 27px;
+            margin-top: 20px;
+        }
+
+        @font-face {
+            font-family: 'Digital dream Fat';
+            src: url('https://semicon.github.io/fonts/DigitaldreamFat.woff2') format('woff2'),
+                 url('https://semicon.github.io/fonts/DigitaldreamFat.woff') format('woff');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=K2D&family=Kanit&family=Sriracha&display=swap');
+
+        * {
+            margin: 0px;
+            padding: 0px;
+            box-sizing: border-box;
+            font-family: 'K2D', sans-serif;
+        }
+
+        body {
+            font-family: 'Kanit', sans-serif;
+            color: #444;
+            background-color: white;
+            padding: 20px;
+            border: 2px solid white;
+            box-shadow: 0px 8px 10px rgba(0, 0, 0, 0.5);
+            font-size: 1.05rem;            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            background-color: #f8f9fa;
+            background: url("./background.jpg") no-repeat center center;
+            -webkit-background-size: cover;
+            -moz-background-size: cover;
+            -o-background-size: cover;
+            background-size: cover;
+        }
+
+        input#employee {
+            font-family: 'Kanit', sans-serif;
+            width: 282px;
+            height: 60px;
+            background-color: brown;
+            color: yellow;
+            margin-block-start: 5px;
+            border-radius: 36px;
+            font-size: 20px;
+        }
+
+        .site-logo {
+            content: url("https://www.huana-nbp.go.th/index/add_file/P0D284NMon35557.png");
+            display: inline-block;
+            margin-top: 20px;
+            width: auto;
+            height: 100px;
+        }
+
+        .msgBg {
+            background-color: transparent;
+        }
+
+        .wrapper {
+            background: rgba(221, 255, 255, 0.7);
+            width: 350px;
+            padding: 20px;
+            border: 1px solid #999;
+            border-radius: 5px;
+            box-shadow: 0px 15px 20px rgba(0, 0, 0, 0.1);
+            position: relative;
+        }
+
+        /** #### digital clock #### **/
+        .clock {
+            font-family: Digital dream Fat;
+            font-size: 28px;
+            color: #00f6fa;
+            letter-spacing: 3px;
+            text-shadow: 1px 1px 2px teal, 0 0 25px green, 0 0 5px #00fbff;
+            min-width: 98%;
+            background: #444;
+            padding: 5px 0px 5px 10px;
+            display: inline-block;
+            border: 3px solid #ccc;
+            border-radius: 2px;
+            outline-style: solid;
+            outline-color: #999;
+        }
+
+        /* ===== ไฟสถานะมุมขวาบน ===== */
+        .status-indicator {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            width: 16px;
+            height: 16px;
+            border-radius: 50%;
+            box-shadow: 0 0 8px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .status-online {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            box-shadow: 
+                0 0 20px rgba(40, 167, 69, 0.6),
+                0 0 40px rgba(40, 167, 69, 0.4),
+                inset 0 1px 3px rgba(255, 255, 255, 0.3);
+            animation: smooth-pulse-green 2s ease-in-out infinite;
+        }
+
+        .status-offline {
+            background: linear-gradient(45deg, #dc3545, #e74c3c);
+            box-shadow: 
+                0 0 20px rgba(220, 53, 69, 0.6),
+                0 0 40px rgba(220, 53, 69, 0.4),
+                inset 0 1px 3px rgba(255, 255, 255, 0.3);
+            animation: smooth-pulse-red 2s ease-in-out infinite;
+        }
+
+        .status-connecting {
+            background: linear-gradient(45deg, #ffc107, #fd7e14);
+            box-shadow: 
+                0 0 20px rgba(255, 193, 7, 0.6),
+                0 0 40px rgba(255, 193, 7, 0.4),
+                inset 0 1px 3px rgba(255, 255, 255, 0.3);
+            animation: smooth-pulse-yellow 1s ease-in-out infinite;
+        }
+
+        /* สมูท animations */
+        @keyframes smooth-pulse-green {
+            0%, 100% { 
+                opacity: 1; 
+                transform: scale(1);
+                box-shadow: 
+                    0 0 20px rgba(40, 167, 69, 0.6),
+                    0 0 40px rgba(40, 167, 69, 0.4),
+                    inset 0 1px 3px rgba(255, 255, 255, 0.3);
+            }
+            50% { 
+                opacity: 0.7; 
+                transform: scale(1.1);
+                box-shadow: 
+                    0 0 30px rgba(40, 167, 69, 0.8),
+                    0 0 60px rgba(40, 167, 69, 0.6),
+                    inset 0 1px 3px rgba(255, 255, 255, 0.3);
+            }
+        }
+
+        @keyframes smooth-pulse-red {
+            0%, 100% { 
+                opacity: 1; 
+                transform: scale(1);
+                box-shadow: 
+                    0 0 20px rgba(220, 53, 69, 0.6),
+                    0 0 40px rgba(220, 53, 69, 0.4),
+                    inset 0 1px 3px rgba(255, 255, 255, 0.3);
+            }
+            50% { 
+                opacity: 0.7; 
+                transform: scale(1.1);
+                box-shadow: 
+                    0 0 30px rgba(220, 53, 69, 0.8),
+                    0 0 60px rgba(220, 53, 69, 0.6),
+                    inset 0 1px 3px rgba(255, 255, 255, 0.3);
+            }
+        }
+
+        @keyframes smooth-pulse-yellow {
+            0%, 100% { 
+                opacity: 1; 
+                transform: scale(1);
+                box-shadow: 
+                    0 0 20px rgba(255, 193, 7, 0.6),
+                    0 0 40px rgba(255, 193, 7, 0.4),
+                    inset 0 1px 3px rgba(255, 255, 255, 0.3);
+            }
+            50% { 
+                opacity: 0.8; 
+                transform: scale(1.15);
+                box-shadow: 
+                    0 0 30px rgba(255, 193, 7, 0.8),
+                    0 0 60px rgba(255, 193, 7, 0.6),
+                    inset 0 1px 3px rgba(255, 255, 255, 0.3);
+            }
+        }        /* Hover effect สำหรับไฟ */
+        .status-indicator:hover {
+            transform: scale(1.2);
+            transition: transform 0.2s ease;
+        }
+
+        /* Ad Modal Styles - DISABLED */
+        /*
+        .ad-modal {
+            display: none;
+            position: fixed;
+            z-index: 10000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(5px);
+        }
+
+        .ad-modal-content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            max-width: 400px;
+            width: 90%;
+            text-align: center;
+        }
+
+        .ad-timer {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: #007bff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            font-weight: bold;
+        }        .ad-close-btn {
+            position: absolute;
+            top: 10px;
+            right: 15px;
+            background: #dc3545;
+            color: white;
+            border: none;
+            border-radius: 50%;
+            width: 25px;
+            height: 25px;
+            font-size: 14px;
+            cursor: pointer;
+            display: none;
+        }
+
+        .ad-close-btn:hover {
+            background: #c82333;
+        }
+
+        .success-message {
+            margin-bottom: 15px;
+            padding: 10px;
+            background: #d4edda;
+            border: 1px solid #c3e6cb;
+            color: #155724;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        .ad-container {
+            margin: 15px 0;
+            min-height: 100px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        */
+
+        .version-info {
+            position: fixed;
+            bottom: 10px;
+            right: 10px;
+            font-size: 0.8rem;
+            color: rgba(255, 255, 255, 0.7);
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 10px;
+            border-radius: 15px;
+        }
+
+        /* Autocomplete UI Styles */
+        .ui-autocomplete {
+            max-height: 200px;
+            overflow-y: auto;
+            font-family: 'Kanit', sans-serif;
+            font-size: 16px;
+            z-index: 9999 !important;
+        }
+
+        .ui-menu-item {
+            padding: 8px 12px;
+        }
+
+        .ui-menu-item:hover {
+            background-color: #e3f2fd;
+        }
+
+        .ui-state-active,
+        .ui-widget-content .ui-state-active {
+            background: #2196f3;
+            color: white;
+            border: 1px solid #1976d2;
+        }
+
+        /* Privacy Policy Modal Styles */
+        .privacy-modal {
+            display: none;
+            position: fixed;
+            z-index: 9999;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(5px);
+        }
+
+        .privacy-modal-content {
+            background-color: #fff;
+            margin: 2% auto;
+            padding: 30px;
+            border-radius: 15px;
+            width: 90%;
+            max-width: 800px;
+            max-height: 90vh;
+            overflow-y: auto;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+            animation: modalSlideIn 0.3s ease-out;
+            font-family: 'K2D', sans-serif;
+        }
+
+        @keyframes modalSlideIn {
+            from {
+                opacity: 0;
+                transform: translateY(-50px) scale(0.9);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        .privacy-header {
+            text-align: center;
+            color: #2c3e50;
+            margin-bottom: 20px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #3498db;
+        }
+
+        .privacy-header h2 {
+            font-size: 24px;
+            margin-bottom: 5px;
+            color: #2980b9;
+        }
+
+        .privacy-header .subtitle {
+            color: #7f8c8d;
+            font-size: 14px;
+        }
+
+        .privacy-content {
+            line-height: 1.8;
+            color: #34495e;
+            font-size: 16px;
+        }
+
+        .privacy-section {
+            margin-bottom: 25px;
+        }
+
+        .privacy-section h3 {
+            color: #2980b9;
+            font-size: 18px;
+            margin-bottom: 12px;
+            padding-left: 10px;
+            border-left: 4px solid #3498db;
+        }
+
+        .privacy-section ul {
+            padding-left: 25px;
+            margin-bottom: 15px;
+        }
+
+        .privacy-section li {
+            margin-bottom: 8px;
+        }
+
+        .privacy-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #ecf0f1;
+        }
+
+        .privacy-btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 25px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'K2D', sans-serif;
+        }        .privacy-btn.accept {
+            background: linear-gradient(135deg, #27ae60, #2ecc71);
+            color: white;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .privacy-btn.accept:enabled {
+            animation: acceptPulse 2s ease-in-out infinite;
+        }
+
+        .privacy-btn.accept:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            animation: none;
+        }
+
+        .privacy-btn.accept:enabled:hover {
+            background: linear-gradient(135deg, #219a52, #27ae60);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(39, 174, 96, 0.4);
+            animation: none;
+        }
+
+        .privacy-btn.accept:enabled:active {
+            transform: translateY(0);
+            box-shadow: 0 4px 10px rgba(39, 174, 96, 0.3);
+        }
+
+        @keyframes acceptPulse {
+            0%, 100% {
+                box-shadow: 0 5px 15px rgba(39, 174, 96, 0.3);
+            }
+            50% {
+                box-shadow: 0 5px 25px rgba(39, 174, 96, 0.5);
+            }
+        }
+
+        .privacy-btn.decline {
+            background: linear-gradient(135deg, #e74c3c, #c0392b);
+            color: white;
+        }
+
+        .privacy-btn.decline:hover {
+            background: linear-gradient(135deg, #c0392b, #a93226);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(231, 76, 60, 0.3);
+        }
+
+        .highlight-box {
+            background: #f8f9fa;
+            border-left: 5px solid #e74c3c;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }        .consent-checkbox {
+            display: flex;
+            align-items: flex-start;
+            margin: 20px 0;
+            padding: 20px;
+            background: linear-gradient(135deg, #f8f9fa, #e9ecef);
+            border-radius: 12px;
+            border: 2px solid #28a745;
+            box-shadow: 0 4px 12px rgba(40, 167, 69, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        .consent-checkbox:hover {
+            border-color: #20c997;
+            box-shadow: 0 6px 18px rgba(40, 167, 69, 0.15);
+        }
+
+        .consent-checkbox input[type="checkbox"] {
+            margin-right: 15px;
+            margin-top: 5px;
+            transform: scale(1.5);
+            accent-color: #28a745;
+            cursor: pointer;
+        }
+
+        .consent-checkbox label {
+            font-size: 15px;
+            color: #2c3e50;
+            cursor: pointer;
+            line-height: 1.6;
+            flex: 1;
+        }
+
+        .consent-checkbox label strong {
+            color: #27ae60;
+            display: block;
+            margin-bottom: 8px;
+        }
+
+        @media (max-width: 768px) {
+            .privacy-modal-content {
+                width: 95%;
+                margin: 5% auto;
+                padding: 20px;
+            }
+            
+            .privacy-buttons {
+                flex-direction: column;
+            }
+            
+            .privacy-btn {
+                width: 100%;
+                margin-bottom: 10px;
+            }
+        }
+        
+        /* Privacy Link Styles */
+        .privacy-link a {
+            transition: all 0.3s ease;
+            border-radius: 15px;
+            padding: 5px 10px;
+        }
+        
+        .privacy-link a:hover {
+            background-color: rgba(108, 117, 125, 0.1);
+            color: #495057 !important;
+            text-decoration: underline !important;
+        }
+        
+        .privacy-link {
+            opacity: 0.8;
+            transition: opacity 0.3s ease;
+        }
+        
+        .privacy-link:hover {
+            opacity: 1;
+        }
+    </style>
+</head>
+
+<!-- ******* Time Tracker HTML Body *********** -->
+<body>
+    <div class="wrapper text-center" style="max-width:350px">
+        <!-- ไฟสถานะมุมขวาบน -->
+        <div id="status-indicator" class="status-indicator status-connecting" title="สถานะการเชื่อมต่อ"></div>        <div class="site-logo text-center"></div>
+        <h5>ระบบลงเวลาออนไลน์ อบต.ข่าใหญ่</h5>
+
+        <span id="MyClockDisplay" class="clock mt-3" onload="showTime()"></span>
+
+        <form id="myForm">
+            <div class="row mt-4">
+                <div class="form-group col">
+                    <label for="employee">พิมพ์ชื่อหรือรหัส </label>
+                    <input id="employee" class="text-center"> <br>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="form-group col">
+                    <label for="lblinfo"><i class="fas fa-book-reader"></i> หมายเหตุ:ประชุม/กิจกรรม อื่นๆ</label>
+                    <input type="search" class="form-control form-control-lg" id="userinfo" name="userinfo" list="list">
+                    <datalist id="list">
+                        <option value="ไปราชการ">ไปราชการ</option>
+                        <option value="ลากิจ">ลากิจ</option>
+                        <option value="ลาป่วย">ลาป่วย</option>
+                        <option value="ลาคลอด">ลาคลอด</option>
+                    </datalist>
+                </div>
+            </div>
+
+            <div class="row mt-4 g-2">
+                <div class="col-6">
+                    <button id="clockin" type="button" class="btn btn-lg btn-primary w-100">Clock In</button>
+                </div>
+                <div class="col-6">
+                    <button id="clockout" type="button" class="btn btn-lg btn-warning w-100">Clock Out</button>
+                </div>
+            </div>
+
+            <div class="row mt-4">
+                <div class="form-group col">
+                    <div class="alert" role="alert" id="message"></div>
+                </div>
+            </div>
+        </form>
+    </div>    <!-- Version info -->
+    <div class="version-info">        <span id="app-version">v2.1.2</span> | 
+        <span id="server-status">Time_tracker</span>
+    </div>
+
+    <!-- Privacy Policy & Terms Links -->
+    <div class="privacy-link" style="text-align: center; margin-top: 10px; font-size: 12px; line-height: 1.6;">
+        <div style="margin-bottom: 5px;">
+            <a href="javascript:void(0)" onclick="showPrivacyPolicy()" 
+               style="color: #6c757d; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                🔒 นโยบายความเป็นส่วนตัว
+            </a>
+            <span style="color: #6c757d; margin: 0 8px;">|</span>
+            <span style="color: #6c757d;">ตาม พ.ร.บ. PDPA</span>
+        </div>
+        <div>
+            <a href="javascript:void(0)" onclick="showTermsOfService()" 
+               style="color: #6c757d; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                📋 ข้อกำหนดการใช้บริการ
+            </a>
+            <!-- ข้อกำหนดโฆษณา - DISABLED
+            <span style="color: #6c757d; margin: 0 8px;">|</span>
+            <a href="javascript:void(0)" onclick="showAdsPolicy()" 
+               style="color: #6c757d; text-decoration: none; display: inline-flex; align-items: center; gap: 5px;">
+                📺 ข้อกำหนดโฆษณา
+            </a>
+            -->
+        </div>
+    </div>
+
+    <!-- Ad Modal - DISABLED -->
+    <!-- 
+    <div id="adModal" class="ad-modal">
+        <div class="ad-modal-content">
+            <div class="ad-timer" id="adTimer">10</div>
+            <button class="ad-close-btn" id="adCloseBtn" onclick="closeAdModal()">×</button>
+            
+            <div class="success-message" id="successMessage">
+                ข้อความสำเร็จจะแสดงที่นี่
+            </div>
+            
+            <div class="ad-container">
+                <ins class="adsbygoogle"
+                     style="display:block; width:300px; height:250px;"
+                     data-ad-client="ca-pub-1797172064583364"
+                     data-ad-slot="1797172064583364"
+                     data-ad-format="rectangle"></ins>
+            </div>
+            
+            <div style="margin-top: 15px; font-size: 12px; color: #666;">
+                โปรดรอ <span id="remainingTime">10</span> วินาที หรือคลิกปิดได้
+            </div>
+        </div>
+    </div>
+    -->
+
+    <!-- Privacy Policy Modal -->
+    <div id="privacyModal" class="privacy-modal">
+        <div class="privacy-modal-content">                <div class="privacy-header">
+                    <div style="font-size: 48px; color: #3498db; margin-bottom: 10px;">🔒</div>
+                    <h2>นโยบายความเป็นส่วนตัวและการคุ้มครองข้อมูลส่วนบุคคล</h2>
+                    <div class="subtitle">ระบบลงเวลาออนไลน์ องค์การบริหารส่วนตำบลข่าใหญ่</div>
+                    <div style="background: #e8f4f8; padding: 8px 15px; border-radius: 20px; display: inline-block; margin-top: 8px; font-size: 12px; color: #2980b9; font-weight: 600;">
+                        ปฏิบัติตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA)
+                    </div>
+                </div>
+            
+            <div class="privacy-content">
+                <div class="highlight-box">
+                    <strong>⚠️ ข้อมูลสำคัญ:</strong> ตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA) 
+                    เราจำเป็นต้องได้รับความยินยอมจากท่านก่อนการเก็บรวบรวมและใช้ข้อมูลส่วนบุคคลของท่าน
+                </div>
+
+                <div class="privacy-section">
+                    <h3>📋 ข้อมูลที่เราเก็บรวบรวม</h3>
+                    <ul>
+                        <li><strong>ข้อมูลพื้นฐาน:</strong> ชื่อ-นามสกุล, ตำแหน่งงาน, หน่วยงาน</li>
+                        <li><strong>ข้อมูลการลงเวลา:</strong> เวลาเข้า-ออกงาน, วันที่ลงเวลา</li>
+                        <li><strong>ข้อมูลตำแหน่งที่ตั้ง (GPS):</strong> พิกัดสถานที่ลงเวลา (เฉพาะขณะลงเวลาเท่านั้น)</li>
+                        <li><strong>ข้อมูลอุปกรณ์:</strong> ประเภทเบราว์เซอร์, ระบบปฏิบัติการ</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>🎯 วัตถุประสงค์การใช้ข้อมูล</h3>
+                    <ul>
+                        <li>บันทึกเวลาเข้า-ออกงานของพนักงาน</li>
+                        <li>ตรวจสอบสถานที่ลงเวลาให้ถูกต้องตามระเบียบ</li>
+                        <li>จัดทำรายงานสถิติการมาทำงาน</li>
+                        <li>ปรับปรุงระบบและบริการให้ดีขึ้น</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>🔐 การรักษาความปลอดภัยข้อมูล</h3>
+                    <ul>
+                        <li>ข้อมูลถูกเข้ารหัสด้วยมาตรฐาน SSL/TLS</li>
+                        <li>จำกัดการเข้าถึงเฉพาะผู้ที่ได้รับอนุญาตเท่านั้น</li>
+                        <li>สำรองข้อมูลอย่างสม่ำเสมอ</li>
+                        <li>ติดตามและตรวจสอบการเข้าถึงข้อมูล</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>📤 การแบ่งปันข้อมูล</h3>
+                    <p>เราจะไม่เปิดเผยข้อมูลส่วนบุคคลของท่านให้กับบุคคลที่สาม ยกเว้น:</p>
+                    <ul>
+                        <li>เมื่อได้รับความยินยอมจากท่าน</li>
+                        <li>เพื่อปฏิบัติตามกฎหมายหรือคำสั่งศาล</li>
+                        <li>เพื่อป้องกันอันตรายต่อชีวิตหรือทรัพย์สิน</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>⚖️ สิทธิของเจ้าของข้อมูล</h3>
+                    <p>ท่านมีสิทธิตามกฎหมาย PDPA ดังนี้:</p>
+                    <ul>
+                        <li><strong>สิทธิในการเข้าถึง:</strong> ขอดูข้อมูลส่วนบุคคลของท่าน</li>
+                        <li><strong>สิทธิในการแก้ไข:</strong> ขอแก้ไขข้อมูลที่ไม่ถูกต้อง</li>
+                        <li><strong>สิทธิในการลบ:</strong> ขอลบข้อมูลส่วนบุคคล</li>
+                        <li><strong>สิทธิในการคัดค้าน:</strong> คัดค้านการประมวลผลข้อมูล</li>
+                        <li><strong>สิทธิในการพกพา:</strong> ขอข้อมูลในรูปแบบที่อ่านได้</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>📞 ติดต่อเรา</h3>
+                    <p>หากมีข้อสงสัยเกี่ยวกับนโยบายนี้ กรุณาติดต่อ:</p>
+                    <ul>
+                        <li><strong>หน่วยงาน:</strong> องค์การบริหารส่วนตำบลข่าใหญ่</li>
+                        <li><strong>ตำแหน่ง:</strong> เจ้าหน้าที่คุ้มครองข้อมูลส่วนบุคคล (DPO)</li>
+                        <li><strong>อีเมล:</strong> dpo@huana-nbp.go.th</li>
+                        <li><strong>โทรศัพท์:</strong> 042-315962 ต่อ 01</li>
+                    </ul>
+                </div>                <div class="consent-checkbox">
+                    <input type="checkbox" id="privacyConsent" required>
+                    <label for="privacyConsent">
+                        <strong>✅ ข้าพเจ้ายอมรับและตกลงในสิ่งต่อไปนี้:</strong><br>
+                        • ได้อ่านและเข้าใจนโยบายความเป็นส่วนตัวและการคุ้มครองข้อมูลส่วนบุคคลแล้ว<br>
+                        • ยินยอมให้องค์การบริหารส่วนตำบลข่าใหญ่เก็บรวบรวม ใช้ และประมวลผลข้อมูลส่วนบุคคลของข้าพเจ้า
+                        เพื่อวัตถุประสงค์ที่ระบุไว้ในนโยบายนี้<br>
+                        • เข้าใจสิทธิและหน้าที่ตาม พ.ร.บ. คุ้มครองข้อมูลส่วนบุคคล พ.ศ. 2562 (PDPA)
+                    </label>
+                </div>
+            </div>
+              <div class="privacy-buttons">
+                <button class="privacy-btn accept" id="acceptPrivacy" disabled>
+                    🔒 ยอมรับนโยบายและใช้งานระบบ
+                </button>
+                <button class="privacy-btn decline" id="declinePrivacy">
+                    ❌ ไม่ยอมรับ
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Terms of Service Modal -->
+    <div id="termsModal" class="privacy-modal">
+        <div class="privacy-modal-content">
+            <div class="privacy-header">
+                <div style="font-size: 48px; color: #3498db; margin-bottom: 10px;">📋</div>
+                <h2>ข้อกำหนดและเงื่อนไขการใช้บริการ</h2>
+                <div class="subtitle">ระบบลงเวลาออนไลน์ องค์การบริหารส่วนตำบลข่าใหญ่</div>
+                <div style="background: #e8f4f8; padding: 8px 15px; border-radius: 20px; display: inline-block; margin-top: 8px; font-size: 12px; color: #2980b9; font-weight: 600;">
+                    เงื่อนไขการใช้งานระบบ
+                </div>
+            </div>
+        
+            <div class="privacy-content">
+                <div class="highlight-box">
+                    <strong>⚠️ ข้อสำคัญ:</strong> การใช้งานระบบลงเวลาออนไลน์นี้ถือว่าท่านยอมรับและตกลงปฏิบัติตามข้อกำหนดและเงื่อนไขทั้งหมด
+                </div>
+
+                <div class="privacy-section">
+                    <h3>👤 ผู้ใช้งานและการเข้าถึง</h3>
+                    <ul>
+                        <li><strong>สิทธิการใช้งาน:</strong> มีสิทธิใช้งานเฉพาะพนักงานองค์การบริหารส่วนตำบลข่าใหญ่เท่านั้น</li>
+                        <li><strong>การยืนยันตัวตน:</strong> ต้องกรอกข้อมูลส่วนตัวที่ถูกต้องและครบถ้วน</li>
+                        <li><strong>การรักษาความลับ:</strong> ห้ามเปิดเผยข้อมูลการเข้าถึงระบบให้บุคคลอื่น</li>
+                        <li><strong>ข้อมูลที่แม่นยำ:</strong> ต้องให้ข้อมูลที่ถูกต้องและเป็นปัจจุบัน</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>⏰ การใช้งานระบบลงเวลา</h3>
+                    <ul>
+                        <li><strong>ลงเวลาด้วยตนเอง:</strong> ห้ามให้บุคคลอื่นลงเวลาแทนโดยเด็ดขาด</li>
+                        <li><strong>ตำแหน่งที่ถูกต้อง:</strong> ต้องอยู่ในพื้นที่ทำงานที่กำหนดเมื่อลงเวลา</li>
+                        <li><strong>ข้อมูลที่แท้จริง:</strong> ห้ามปลอมแปลงเวลาหรือตำแหน่งในการลงเวลา</li>
+                        <li><strong>การใช้งานที่เหมาะสม:</strong> ใช้งานเฉพาะวัตถุประสงค์การลงเวลาเข้า-ออกงานเท่านั้น</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>🚫 ข้อห้ามและข้อจำกัด</h3>
+                    <ul>
+                        <li><strong>การทำลายระบบ:</strong> ห้ามกระทำการใดๆ ที่อาจทำลายหรือขัดขวางการทำงานของระบบ</li>
+                        <li><strong>การใช้งานโดยมิชอบ:</strong> ห้ามใช้งานในทางที่ผิดกฎหมายหรือขัดต่อจริยธรรม</li>
+                        <li><strong>การเข้าถึงโดยไม่ได้รับอนุญาต:</strong> ห้ามพยายามเข้าถึงข้อมูลที่ไม่มีสิทธิ</li>
+                        <li><strong>การแจกจ่ายมัลแวร์:</strong> ห้ามส่งหรือใช้โปรแกรมที่เป็นอันตราย</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>📊 ข้อมูลและการติดตาม</h3>
+                    <ul>
+                        <li><strong>บันทึกการใช้งาน:</strong> ระบบจะบันทึกการใช้งานทั้งหมดเพื่อการตรวจสอบ</li>
+                        <li><strong>การตรวจสอบ:</strong> หน่วยงานมีสิทธิตรวจสอบการใช้งานได้ตลอดเวลา</li>
+                        <li><strong>การสำรองข้อมูล:</strong> ข้อมูลจะถูกสำรองและเก็บรักษาตามระเบียบราชการ</li>
+                        <li><strong>การรายงาน:</strong> ข้อมูลอาจถูกใช้จัดทำรายงานสถิติและการบริหารจัดการ</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>⚖️ ความรับผิดชอบและการคุ้มครอง</h3>
+                    <ul>
+                        <li><strong>ความรับผิดชอบของผู้ใช้:</strong> ผู้ใช้รับผิดชอบการใช้งานและข้อมูลที่กรอกทั้งหมด</li>
+                        <li><strong>การคุ้มครองระบบ:</strong> หน่วยงานพยายามรักษาความปลอดภัยของระบบอย่างเต็มที่</li>
+                        <li><strong>ข้อจำกัดความรับผิด:</strong> หน่วยงานไม่รับผิดชอบความเสียหายจากการใช้งานที่ผิดระเบียบ</li>
+                        <li><strong>การแก้ไขปัญหา:</strong> หน่วยงานจะแก้ไขปัญหาทางเทคนิคอย่างรวดเร็วที่สุด</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>🔄 การแก้ไขและยกเลิก</h3>
+                    <ul>
+                        <li><strong>การแก้ไขข้อกำหนด:</strong> หน่วยงานมีสิทธิแก้ไขข้อกำหนดโดยแจ้งให้ทราบล่วงหน้า</li>
+                        <li><strong>การยกเลิกสิทธิ:</strong> หน่วยงานมีสิทธิยกเลิกการใช้งานหากมีการละเมิดข้อกำหนด</li>
+                        <li><strong>การสิ้นสุดสัญญา:</strong> เมื่อผู้ใช้ลาออกหรือโอนย้าย สิทธิการใช้งานจะสิ้นสุดทันที</li>
+                        <li><strong>การเก็บข้อมูล:</strong> ข้อมูลจะถูกเก็บรักษาตามระเบียบราชการแม้หลังสิ้นสุดการใช้งาน</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>📞 การติดต่อและการร้องเรียน</h3>
+                    <ul>
+                        <li><strong>ปัญหาทางเทคนิค:</strong> แจ้งที่งานสารสนเทศ โทร. 042-315962 ต่อ 01</li>
+                        <li><strong>ปัญหาการใช้งาน:</strong> แจ้งที่ฝ่ายทรัพยากรบุคคล โทร. 042-315962 ต่อ 01</li>
+                        <li><strong>การร้องเรียน:</strong> สามารถร้องเรียนผ่านช่องทางอย่างเป็นทางการของหน่วยงาน</li>
+                        <li><strong>เวลาติดต่อ:</strong> วันจันทร์-วันศุกร์ เวลา 08:30-16:30 น.</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <strong>💡 หมายเหตุ:</strong> ข้อกำหนดนี้มีผลบังคับใช้ตั้งแต่วันที่ 17 มิถุนายน 2568 และอาจมีการปรับปรุงเป็นครั้งคราวเพื่อให้สอดคล้องกับระเบียบราชการและเทคโนโลยีที่เปลี่ยนแปลง
+                </div>
+            </div>
+            
+            <div class="privacy-buttons">
+                <button class="privacy-btn accept" onclick="document.getElementById('termsModal').style.display='none'">
+                    ✅ ปิด
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Google Ads Policy Modal - DISABLED -->
+    <!-- 
+    <div id="adsModal" class="privacy-modal">
+        <div class="privacy-modal-content">
+            <div class="privacy-header">
+                <div style="font-size: 48px; color: #e74c3c; margin-bottom: 10px;">📺</div>
+                <h2>ข้อกำหนดการแสดงโฆษณา</h2>
+                <div class="subtitle">Google AdSense และการใช้งานโฆษณาในระบบ</div>
+                <div style="background: #fef2f2; padding: 8px 15px; border-radius: 20px; display: inline-block; margin-top: 8px; font-size: 12px; color: #e74c3c; font-weight: 600;">
+                    นโยบายเกี่ยวกับโฆษณาและ Google AdSense
+                </div>
+            </div>
+        
+            <div class="privacy-content">
+                <div class="highlight-box">
+                    <strong>⚠️ ข้อสำคัญ:</strong> ระบบนี้ใช้บริการ Google AdSense เพื่อแสดงโฆษณาที่เกี่ยวข้องและสนับสนุนการดำเนินงานของระบบ
+                </div>
+
+                <div class="privacy-section">
+                    <h3>📢 เกี่ยวกับโฆษณาในระบบ</h3>
+                    <ul>
+                        <li><strong>วัตถุประสงค์:</strong> โฆษณาช่วยสนับสนุนค่าใช้จ่ายในการดำเนินงานและพัฒนาระบบ</li>
+                        <li><strong>ประเภทโฆษณา:</strong> แสดงโฆษณาที่เหมาะสมและไม่ขัดต่อจริยธรรม</li>
+                        <li><strong>การควบคุม:</strong> โฆษณาผ่านการตรวจสอบความเหมาะสมจาก Google</li>
+                        <li><strong>ความปลอดภัย:</strong> โฆษณาปลอดภัยและไม่มีมัลแวร์หรือเนื้อหาที่เป็นอันตราย</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>🍪 การใช้ Cookies และข้อมูลสำหรับโฆษณา</h3>
+                    <ul>
+                        <li><strong>Google Analytics:</strong> ใช้เพื่อวิเคราะห์การใช้งานและปรับปรุงประสบการณ์</li>
+                        <li><strong>AdSense Cookies:</strong> ช่วยแสดงโฆษณาที่เกี่ยวข้องกับความสนใจของผู้ใช้</li>
+                        <li><strong>ข้อมูลที่ไม่ระบุตัวตน:</strong> เก็บรวบรวมข้อมูลที่ไม่สามารถระบุตัวบุคคลได้</li>
+                        <li><strong>การจดจำความชอบ:</strong> ช่วยแสดงโฆษณาที่เหมาะสมมากขึ้น</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>🎯 การกำหนดเป้าหมายโฆษณา (Ad Targeting)</h3>
+                    <ul>
+                        <li><strong>ตามความสนใจ:</strong> แสดงโฆษณาตามเนื้อหาที่ผู้ใช้เข้าชมบ่อยๆ</li>
+                        <li><strong>ตามตำแหน่งที่ตั้ง:</strong> แสดงโฆษณาที่เกี่ยวข้องกับพื้นที่ของผู้ใช้</li>
+                        <li><strong>ตามเวลา:</strong> แสดงโฆษณาที่เหมาะสมกับช่วงเวลาการใช้งาน</li>
+                        <li><strong>ไม่ใช้ข้อมูลส่วนตัว:</strong> ไม่ใช้ข้อมูลการลงเวลาหรือข้อมูลงานในการกำหนดเป้าหมาย</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>⚙️ การควบคุมและตั้งค่าโฆษณา</h3>
+                    <ul>
+                        <li><strong>Ad Blocker:</strong> ผู้ใช้สามารถใช้โปรแกรมปิดกั้นโฆษณาได้ แต่อาจส่งผลต่อการทำงานของระบบ</li>
+                        <li><strong>การตั้งค่า Google:</strong> สามารถปรับแต่งการแสดงโฆษณาผ่าน Google Ad Settings</li>
+                        <li><strong>การรายงานโฆษณา:</strong> สามารถรายงานโฆษณาที่ไม่เหมาะสมได้</li>
+                        <li><strong>การปิดใช้งาน:</strong> สามารถปิดการติดตาม Cookies ผ่านการตั้งค่าเบราว์เซอร์</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>💰 การสนับสนุนและการดำเนินงาน</h3>
+                    <ul>
+                        <li><strong>วัตถุประสงค์:</strong> โฆษณาช่วยสนับสนุนการดำเนินงานและให้บริการระบบอย่างต่อเนื่อง</li>
+                        <li><strong>ไม่มีค่าใช้จ่าย:</strong> ผู้ใช้ไม่ต้องเสียค่าใช้จ่ายในการใช้งานระบบ</li>
+                        <li><strong>การให้บริการ:</strong> ช่วยให้องค์กรสามารถให้บริการระบบลงเวลาได้อย่างมีประสิทธิภาพ</li>
+                        <li><strong>ไม่แนะนำการคลิก:</strong> ห้ามคลิกโฆษณาเพียงเพื่อสนับสนุน โดยไม่มีความสนใจจริง</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>🛡️ การคุ้มครองและความปลอดภัย</h3>
+                    <ul>
+                        <li><strong>การตรวจสอบโฆษณา:</strong> โฆษณาทั้งหมดผ่านการตรวจสอบจาก Google อย่างเข้มงวด</li>
+                        <li><strong>การป้องกันมัลแวร์:</strong> ระบบป้องกันโฆษณาที่มีมัลแวร์หรือเนื้อหาเป็นอันตราย</li>
+                        <li><strong>ไม่เก็บข้อมูลสำคัญ:</strong> โฆษณาไม่สามารถเข้าถึงข้อมูลการลงเวลาหรือข้อมูลงานได้</li>
+                        <li><strong>การเข้ารหัส:</strong> การติดต่อสื่อสารทั้งหมดใช้ระบบเข้ารหัส HTTPS</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>🔗 ลิงก์และข้อมูลเพิ่มเติม</h3>
+                    <ul>
+                        <li><strong>นโยบาย Google AdSense:</strong> <em>https://support.google.com/adsense/answer/48182</em></li>
+                        <li><strong>การตั้งค่าโฆษณา:</strong> <em>https://adssettings.google.com</em></li>
+                        <li><strong>นโยบายความเป็นส่วนตัวของ Google:</strong> <em>https://policies.google.com/privacy</em></li>
+                        <li><strong>การปิดใช้งาน Cookies:</strong> สามารถตั้งค่าผ่านเบราว์เซอร์ของท่าน</li>
+                    </ul>
+                </div>
+
+                <div class="privacy-section">
+                    <h3>📞 การติดต่อเกี่ยวกับโฆษณา</h3>
+                    <p>หากมีข้อสงสัยหรือต้องการรายงานปัญหาเกี่ยวกับโฆษณา:</p>
+                    <ul>
+                        <li><strong>อีเมล:</strong> webmaster@huana-nbp.go.th</li>
+                        <li><strong>โทรศัพท์:</strong> 042-315962 ต่อ 01 (งานสารสนเทศ)</li>
+                        <li><strong>รายงานโฆษณาที่ไม่เหมาะสม:</strong> คลิกที่เครื่องหมาย X หรือ "Report Ad" บนโฆษณา</li>
+                    </ul>
+                </div>
+
+                <div class="highlight-box">
+                    <strong>📅 อัปเดต:</strong> นโยบายนี้อาจมีการปรับปรุงตามนโยบายของ Google AdSense และกฎหมายที่เกี่ยวข้อง การใช้งานระบบต่อไปถือว่ายอมรับการเปลี่ยนแปลงที่เกิดขึ้น
+                </div>
+            </div>
+            
+            <div class="privacy-buttons">
+                <button class="privacy-btn accept" onclick="document.getElementById('adsModal').style.display='none'">
+                    ✅ ปิด
+                </button>
+            </div>
+        </div>
+    </div>
+    -->
+
+    <script src="https://unpkg.com/vconsole@latest/dist/vconsole.min.js"></script>
+    <script>
+        // VConsole สำหรับ debug (เปิดเฉพาะ development)
+        // var vConsole = new window.VConsole();
+    </script>
+
+    <!-- ******* Javascript *********** -->
+    <script>
+        // ===== Configuration =====
+        var isProduction = window.location.hostname !== 'localhost' && window.location.hostname !== '127.0.0.1';
+        var apiUrl = isProduction ? 
+            window.location.origin + '/api' : 
+            'http://localhost:3000/api';
+        
+        var owner = 'องค์การบริหารส่วนตำบลข่าใหญ่';
+        var connectionRetryCount = 0;
+        var maxRetries = 3;        // Configuration from server
+        var appConfig = null;
+
+        // GPS Variables - ทำงานเบื้องหลัง
+        var gps = null;
+        var isGpsReady = false;
+        var gpsWatchId = null;
+        var hasRequestedPermission = false;
+
+        // Employee validation variables
+        var validEmployees = [];
+        var isEmployeeListLoaded = false;
+
+        console.log('🌐 API URL:', apiUrl);
+        console.log('🏢 Environment:', isProduction ? 'Production' : 'Development');
+
+        var profile;
+
+        // ฟังก์ชันโหลด Configuration จาก server
+        async function loadAppConfig() {
+            try {
+                const response = await fetch(apiUrl + '/config');
+                const result = await response.json();
+                
+                if (result.success) {
+                    appConfig = result.data;
+                    console.log('🔧 App config loaded:', appConfig);
+                    
+                    // อัปเดต apiUrl ถ้าได้จาก server
+                    if (appConfig.apiUrl) {
+                        apiUrl = appConfig.apiUrl;
+                        console.log('🌐 Updated API URL:', apiUrl);
+                    }
+                    
+                    return true;
+                } else {
+                    throw new Error('Failed to load config');
+                }            } catch (error) {
+                console.error('❌ Failed to load app config:', error);
+                // ใช้ค่า default ถ้าโหลดไม่ได้
+                appConfig = {
+                    liffId: '', // ไม่ใช้ fallback value - ให้ใช้จาก server เท่านั้น
+                    apiUrl: apiUrl,
+                    environment: 'development'
+                };
+                return false;
+            }
+        }
+
+        // ตรวจสอบการเชื่อมต่อกับ server
+        async function checkServerConnection() {
+            try {
+                const response = await fetch(apiUrl + '/health');
+                const data = await response.json();
+                
+                if (response.ok && data.status === 'healthy') {
+                    updateConnectionStatus('online');
+                    connectionRetryCount = 0;
+                    return true;
+                } else {
+                    throw new Error('Server unhealthy');
+                }
+            } catch (error) {
+                console.error('❌ Connection check failed:', error);
+                updateConnectionStatus('offline');
+                
+                if (connectionRetryCount < maxRetries) {
+                    connectionRetryCount++;
+                    setTimeout(checkServerConnection, 5000);
+                    updateConnectionStatus('connecting');
+                }
+                
+                return false;
+            }
+        }
+
+        // ฟังก์ชันอัพเดทสถานะไฟ - แค่เปลี่ยนสี ไม่มีข้อความ
+        function updateConnectionStatus(status) {
+            const indicator = document.getElementById('status-indicator');
+            
+            // ลบ class เก่าทั้งหมด
+            indicator.classList.remove('status-online', 'status-offline', 'status-connecting');
+            
+            // เพิ่ม class ใหม่
+            indicator.classList.add(`status-${status}`);
+            
+            // อัพเดท tooltip
+            const statusText = {
+                online: 'เชื่อมต่อแล้ว',
+                offline: 'ไม่สามารถเชื่อมต่อได้',
+                connecting: 'กำลังเชื่อมต่อ...'
+            };
+            
+            indicator.title = statusText[status] || 'ไม่ทราบสถานะ';
+            
+            console.log(`🔘 Status updated: ${status}`);
+        }
+
+        // ======== GPS Functions - ทำงานเบื้องหลัง ========
+        function initializeGPS() {
+            console.log('📍 Initializing GPS silently...');
+
+            if (!navigator.geolocation) {
+                console.warn('❌ Geolocation not supported');
+                getFallbackLocation();
+                return;
+            }
+
+            // ลองขอตำแหน่งแบบเงียบๆ
+            const gpsOptions = {
+                enableHighAccuracy: true,
+                timeout: 10000,
+                maximumAge: 60000
+            };
+
+            navigator.geolocation.getCurrentPosition(
+                onGpsSuccess,
+                onGpsError,
+                gpsOptions
+            );
+
+            // เริ่ม watch position
+            gpsWatchId = navigator.geolocation.watchPosition(
+                onGpsUpdate,
+                onGpsError,
+                {
+                    enableHighAccuracy: true,
+                    timeout: 8000,
+                    maximumAge: 30000
+                }
+            );
+        }
+
+        function onGpsSuccess(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            const accuracy = position.coords.accuracy;
+            
+            gps = [lat, lon];
+            isGpsReady = true;
+            
+            console.log(`✅ GPS Ready: ${lat}, ${lon} (accuracy: ${Math.round(accuracy)}m)`);
+        }
+
+        function onGpsUpdate(position) {
+            const lat = position.coords.latitude;
+            const lon = position.coords.longitude;
+            
+            gps = [lat, lon];
+            console.log(`📍 GPS Updated: ${lat}, ${lon}`);
+        }
+
+        function onGpsError(error) {
+            console.warn('⚠️ GPS Error:', error.code, error.message);
+            
+            // ถ้ายังไม่เคยขออนุญาตและเป็น PERMISSION_DENIED
+            if (error.code === error.PERMISSION_DENIED && !hasRequestedPermission) {
+                // ไม่ทำอะไร ปล่อยให้ fallback ทำงาน
+                console.log('📍 Permission denied, will use fallback when needed');
+            }
+            
+            // ลองใช้วิธีอื่น
+            setTimeout(getFallbackLocation, 1000);
+        }        function getFallbackLocation() {
+            console.log('🔄 Fallback location: Only URL parameters allowed...');
+            
+            // วิธีที่ 1: URL parameters เท่านั้น
+            const urlParams = new URLSearchParams(window.location.search);
+            const urlLat = urlParams.get('lat');
+            const urlLon = urlParams.get('lon');
+            
+            if (urlLat && urlLon) {
+                gps = [parseFloat(urlLat), parseFloat(urlLon)];
+                isGpsReady = true;
+                console.log('📍 Using URL location:', gps);
+                return;
+            }
+            
+            // ไม่ใช้ IP Geolocation และ Default Location
+            console.warn('⚠️ No GPS permission and no URL parameters - location unavailable');
+            gps = null;
+            isGpsReady = false;
+        }
+
+        // ======== SweetAlert2 GPS Permission ========
+        async function requestGPSPermission() {
+            hasRequestedPermission = true;
+            
+            const result = await Swal.fire({
+                title: '📍 ขออนุญาตใช้ตำแหน่ง',
+                text: 'ระบบต้องการเข้าถึงตำแหน่งของคุณเพื่อบันทึกการลงเวลา',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'อนุญาต',
+                cancelButtonText: 'ไม่อนุญาต',
+                allowOutsideClick: false
+            });
+
+            if (result.isConfirmed) {
+                // แสดง loading
+                Swal.fire({
+                    title: 'กำลังค้นหาตำแหน่ง...',
+                    html: 'โปรดรอสักครู่',
+                    timer: 5000,
+                    timerProgressBar: true,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    },
+                    allowOutsideClick: false
+                });
+
+                // ขอตำแหน่งด้วยการตั้งค่าที่แม่นยำ
+                navigator.geolocation.getCurrentPosition(
+                    (position) => {
+                        const lat = position.coords.latitude;
+                        const lon = position.coords.longitude;
+                        const accuracy = position.coords.accuracy;
+                        
+                        gps = [lat, lon];
+                        isGpsReady = true;
+                        
+                        console.log(`✅ GPS Permission granted: ${lat}, ${lon}`);
+                        
+                        Swal.fire({
+                            title: 'สำเร็จ!',
+                            text: `พบตำแหน่งแล้ว (แม่นยำ ${Math.round(accuracy)} เมตร)`,
+                            icon: 'success',
+                            timer: 2000,
+                            showConfirmButton: false
+                        });
+                    },
+                    (error) => {
+                        console.error('❌ GPS Permission error:', error);
+                        
+                        Swal.fire({
+                            title: 'ไม่สามารถหาตำแหน่งได้',
+                            text: 'ระบบจะใช้ตำแหน่งโดยประมาณ',
+                            icon: 'warning',
+                            timer: 3000,
+                            showConfirmButton: false
+                        });
+                        
+                        getFallbackLocation();
+                    },
+                    {
+                        enableHighAccuracy: true,
+                        timeout: 15000,
+                        maximumAge: 0
+                    }
+                );
+            } else {
+                // ผู้ใช้ไม่อนุญาต
+                Swal.fire({
+                    title: 'ใช้ตำแหน่งโดยประมาณ',
+                    text: 'ระบบจะใช้ตำแหน่งเริ่มต้น',
+                    icon: 'info',
+                    timer: 2000,
+                    showConfirmButton: false
+                });
+                
+                getFallbackLocation();
+            }        }
+
+        // ======== Employee Validation Functions ========
+        function validateEmployee(employeeName) {
+            if (!isEmployeeListLoaded) {
+                console.warn('⚠️ Employee list not loaded yet');
+                return false;
+            }
+            
+            if (!employeeName || employeeName.trim() === '') {
+                return false;
+            }
+            
+            // ตรวจสอบว่าชื่อตรงกับรายการพนักงานหรือไม่ (ไม่สนใจ case)
+            const normalizedInput = employeeName.trim().toLowerCase();
+            const isValid = validEmployees.some(emp => 
+                emp.toLowerCase() === normalizedInput
+            );
+            
+            console.log('👤 Employee validation:', {
+                input: employeeName,
+                normalized: normalizedInput,
+                isValid: isValid,
+                totalEmployees: validEmployees.length
+            });
+            
+            return isValid;
+        }
+
+        function showEmployeeError(employeeName) {
+            $('#message').html(`
+                <div class="mb-2">
+                    <strong>⚠️ ชื่อพนักงานไม่ถูกต้อง</strong>
+                </div>
+                <div class="small">
+                    "<span class="text-danger">${employeeName}</span>" ไม่มีในรายการพนักงาน<br>
+                    กรุณาเลือกจากรายการที่แสดงหรือติดต่อเจ้าหน้าที่
+                </div>
+            `);
+            document.getElementById("message").className = "alert alert-danger";
+            
+            // เน้นช่องกรอกชื่อ
+            const employeeInput = document.getElementById("employee");
+            employeeInput.style.borderColor = '#dc3545';
+            employeeInput.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
+            
+            // รีเซ็ตสีกรอบหลัง 3 วินาที
+            setTimeout(() => {
+                employeeInput.style.borderColor = '';
+                employeeInput.style.boxShadow = '';
+            }, 3000);
+        }
+
+        // ======== Ad Modal Functions - DISABLED ========
+        let adTimer = null;
+        let adTimeRemaining = 10;
+
+        function showAdModal(successMessage) {
+            // โฆษณาถูกปิดการใช้งาน - แสดงแค่ข้อความสำเร็จ
+            console.log('📺 Ads disabled - showing success message:', successMessage);
+            
+            // แสดงข้อความสำเร็จผ่าน SweetAlert แทน
+            Swal.fire({
+                html: successMessage,
+                icon: 'success',
+                timer: 3000,
+                showConfirmButton: false,
+                toast: true,
+                position: 'top-end'
+            });
+        }
+
+        function closeAdModal() {
+            // โฆษณาถูกปิดการใช้งาน - ไม่ต้องทำอะไร
+            console.log('📺 Ad modal close called (ads disabled)');
+            return false;
+        }        // ======== Enhanced Clock In/Out Functions ========
+        async function ClockIn() {
+            event.preventDefault();
+            
+            var employee = document.getElementById("employee").value;
+            var userinfo = document.getElementById("userinfo").value;
+
+            if (employee != '') {
+                // ตรวจสอบชื่อพนักงานก่อน
+                if (!validateEmployee(employee)) {
+                    showEmployeeError(employee);
+                    return;
+                }
+                
+                // ตรวจสอบ GPS - ถ้าไม่พร้อมให้ขออนุญาต
+                if (!isGpsReady || !gps) {
+                    console.log('📍 GPS not ready, requesting permission...');
+                    await requestGPSPermission();
+                      // ถ้ายังไม่พร้อมให้รอ
+                    if (!isGpsReady || !gps) {
+                        $('#message').html('⚠️ ระบบต้องการตำแหน่งจริงจากผู้ใช้ กรุณาอนุญาตการเข้าถึงตำแหน่ง (Clock In)');
+                        document.getElementById("message").className = "alert alert-warning";
+                        return;
+                    }
+                }
+
+                $('#message').html("<span class='spinner-border spinner-border-sm text-primary'></span> โปรดรอสักครู่ ...!");
+                
+                try {
+                    if (typeof liff !== 'undefined' && liff.isLoggedIn()) {
+                        profile = liff.getDecodedIDToken();
+                    }
+
+                    console.log('⏰ Sending Clock In request:', {
+                        employee,
+                        userinfo,
+                        lat: gps[0],
+                        lon: gps[1]
+                    });
+
+                    const response = await fetch(apiUrl + '/clockin', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            employee,
+                            userinfo,
+                            lat: gps[0],
+                            lon: gps[1],
+                            line_name: profile ? profile.name : 'ผู้ใช้งาน',
+                            line_picture: profile ? profile.picture : ''
+                        })
+                    });
+
+                    const result = await response.json();
+                    console.log('⏰ Clock In result:', result);
+                      if (result.success) {
+                        setTimeout(() => {
+                            var message = result.employee + '<br> บันทึกเวลามา ' + result.time;
+                            $('#message').html(message);
+                            document.getElementById("message").className = "alert alert-primary";
+                            
+                            // แสดงโฆษณา
+                            showAdModal(`
+                                <strong>✅ ลงเวลาเข้าสำเร็จ!</strong><br>
+                                <div style="margin-top: 10px;">
+                                    <strong>${result.employee}</strong><br>
+                                    เวลาเข้า: <strong>${result.time}</strong>
+                                </div>
+                            `);
+                            
+                            clearForm();
+                        }, 500);
+                    } else {
+                        var message = result.employee + ' ' + result.message;
+                        $('#message').html(message);
+                        document.getElementById("message").className = "alert alert-warning";
+                        clearForm();
+                    }
+
+                } catch (error) {
+                    console.error('❌ Clock in error:', error);
+                    $('#message').html('⚠️ เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
+                    document.getElementById("message").className = "alert alert-danger";
+                    clearForm();
+                }
+            } else {
+                $('#message').html('⚠️ กรุณาเลือกรายชื่อพนักงาน ...!');
+                document.getElementById('message').className = 'alert alert-warning text-danger';
+                clearForm();
+            }
+        }        async function ClockOut() {
+            event.preventDefault();
+              var employee = document.getElementById("employee").value;
+
+            if (employee != '') {
+                // ตรวจสอบชื่อพนักงานก่อน
+                if (!validateEmployee(employee)) {
+                    showEmployeeError(employee);
+                    return;
+                }
+                
+                // ตรวจสอบ GPS - ถ้าไม่พร้อมให้ขออนุญาต
+                if (!isGpsReady || !gps) {
+                    console.log('📍 GPS not ready, requesting permission...');
+                    await requestGPSPermission();
+                      // ถ้ายังไม่พร้อมให้รอ
+                    if (!isGpsReady || !gps) {
+                        $('#message').html('⚠️ ระบบต้องการตำแหน่งจริงจากผู้ใช้ กรุณาอนุญาตการเข้าถึงตำแหน่ง (Clock Out)');
+                        document.getElementById("message").className = "alert alert-warning";
+                        return;
+                    }
+                }
+
+                $('#message').html("<span class='spinner-border spinner-border-sm text-warning'></span> โปรดรอสักครู่ ...!");
+                
+                try {
+                    if (typeof liff !== 'undefined' && liff.isLoggedIn()) {
+                        profile = liff.getDecodedIDToken();
+                    }
+
+                    console.log('⏰ Sending Clock Out request:', {
+                        employee,
+                        lat: gps[0],
+                        lon: gps[1]
+                    });
+
+                    const response = await fetch(apiUrl + '/clockout', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({
+                            employee,
+                            lat: gps[0],
+                            lon: gps[1],
+                            line_name: profile ? profile.name : 'ผู้ใช้งาน',
+                            line_picture: profile ? profile.picture : ''
+                        })
+                    });
+
+                    const result = await response.json();
+                    console.log('⏰ Clock Out result:', result);
+                      if (result.success) {
+                        setTimeout(() => {
+                            var message = result.employee + '<br> บันทึกเวลากลับ ' + result.time;
+                            if (result.hours) {
+                                message += '<br>ทำงานรวม ' + result.hours + ' ชั่วโมง';
+                            }
+                            $('#message').html(message);
+                            document.getElementById("message").className = "alert alert-primary";
+                            
+                            // แสดงโฆษณา
+                            let adMessage = `
+                                <strong>✅ ลงเวลาออกสำเร็จ!</strong><br>
+                                <div style="margin-top: 10px;">
+                                    <strong>${result.employee}</strong><br>
+                                    เวลาออก: <strong>${result.time}</strong>
+                            `;
+                            
+                            if (result.hours) {
+                                adMessage += `<br>ทำงานรวม: <strong>${result.hours} ชั่วโมง</strong>`;
+                            }
+                            
+                            adMessage += `</div>`;
+                            
+                            showAdModal(adMessage);
+                            
+                            clearForm();
+                        }, 500);
+                    } else {
+                        var message = result.employee + ' ' + result.message;
+                        $('#message').html(message);
+                        document.getElementById("message").className = "alert alert-warning";
+                        clearForm();
+                    }
+
+                } catch (error) {
+                    console.error('❌ Clock out error:', error);
+                    $('#message').html('⚠️ เกิดข้อผิดพลาด กรุณาลองใหม่อีกครั้ง');
+                    document.getElementById("message").className = "alert alert-danger";
+                    clearForm();
+                }
+            } else {
+                $('#message').html("⚠️ กรุณาเลือกรายชื่อพนักงาน ...!");
+                document.getElementById("message").className = "alert alert-warning text-danger";
+                clearForm();
+            }
+        }
+
+        $(document).ready(function () {
+            let profile = null;
+
+            // เริ่มระบบ GPS เบื้องหลังทันที
+            initializeGPS();
+
+            // ตรวจสอบการเชื่อมต่อ
+            checkServerConnection();            $('#clockin').click(() => ClockIn());
+            $('#clockout').click(() => ClockOut());
+
+            // เพิ่มการตรวจสอบ real-time เมื่อผู้ใช้พิมพ์
+            $('#employee').on('input blur', function() {
+                const employeeName = $(this).val().trim();
+                const employeeInput = document.getElementById("employee");
+                
+                if (employeeName && isEmployeeListLoaded) {
+                    if (validateEmployee(employeeName)) {
+                        // ชื่อถูกต้อง - เปลี่ยนเป็นสีเขียว
+                        employeeInput.style.borderColor = '#28a745';
+                        employeeInput.style.boxShadow = '0 0 0 0.2rem rgba(40, 167, 69, 0.25)';
+                    } else {
+                        // ชื่อไม่ถูกต้อง - เปลี่ยนเป็นสีแดง
+                        employeeInput.style.borderColor = '#dc3545';
+                        employeeInput.style.boxShadow = '0 0 0 0.2rem rgba(220, 53, 69, 0.25)';
+                    }
+                } else {
+                    // รีเซ็ตสีปกติ
+                    employeeInput.style.borderColor = '';
+                    employeeInput.style.boxShadow = '';
+                }
+            });
+
+            // โหลด configuration จาก server ก่อน
+            loadAppConfig().then((configLoaded) => {
+                console.log('📋 Config loading result:', configLoaded);
+                
+                // เช็คว่ามี LIFF ไหม (สำหรับ LINE)
+                if (typeof liff !== 'undefined' && appConfig.liffId) {
+                    console.log('🚀 Initializing LIFF with ID:', appConfig.liffId);
+                    
+                    liff.init({
+                        liffId: appConfig.liffId,
+                        withLoginOnExternalBrowser: true
+                    });
+
+                    liff.ready.then(() => {
+                        profile = liff.getDecodedIDToken();
+
+                        if (profile) {
+                            console.log("🚀 LINE Profile loaded:", profile.name);
+                        } else {
+                            console.log("⚠️ No LINE profile available");
+                        }
+
+                        initApp();
+                    });
+                } else {
+                    console.log("⚠️ LIFF not available or no LIFF ID, using fallback");
+                    profile = {
+                        name: 'ผู้ใช้งาน',
+                        picture: ''
+                    };
+                    initApp();
+                }
+            });
+
+            function initApp() {
+                document.getElementById('message').innerText = owner;
+                document.getElementById('message').className = 'alert msgBg';
+                
+                // รอให้ jQuery UI โหลดเสร็จก่อนโหลดข้อมูลพนักงาน
+                console.log('🔧 Initializing app...');
+                console.log('📚 jQuery version:', $.fn.jquery);
+                console.log('📚 jQuery UI loaded:', typeof $.fn.autocomplete !== 'undefined');
+                
+                // รอสักครู่แล้วค่อยโหลดข้อมูลพนักงาน
+                setTimeout(() => {
+                    loadEmployees();
+                }, 500);
+            }
+        });
+
+        async function loadEmployees() {
+            try {
+                console.log('👥 Loading employees...');
+                
+                const response = await fetch(apiUrl + '/employees', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({})
+                });
+
+                if (!response.ok) {
+                    throw new Error(`HTTP ${response.status}`);
+                }
+
+                const data = await response.json();
+                console.log('📊 Employee data received:', data);
+                  if (data.success && data.data && Array.isArray(data.data)) {
+                    var dataPerson = data.data;
+                    
+                    // เก็บรายชื่อพนักงานสำหรับการตรวจสอบ
+                    validEmployees = [...dataPerson];
+                    isEmployeeListLoaded = true;
+                    
+                    console.log('👥 Employees loaded successfully:', dataPerson.length, 'employees');
+                    console.log('📋 Sample employees:', dataPerson.slice(0, 3));
+                    console.log('✅ Valid employees list updated:', validEmployees.length, 'entries');
+                    
+                    // ตรวจสอบว่า jQuery UI พร้อมใช้งานแล้ว
+                    if (typeof $.fn.autocomplete === 'undefined') {
+                        console.error('❌ jQuery UI Autocomplete not loaded');
+                        return;
+                    }
+                    
+                    // ตั้งค่า Autocomplete
+                    $("#employee").autocomplete({
+                        source: dataPerson,
+                        minLength: 1, // แสดงผลเมื่อพิมพ์อย่างน้อย 1 ตัวอักษร
+                        maxShowItems: 5, // แสดงสูงสุด 5 รายการ
+                        autoFocus: true, // เลือกรายการแรกอัตโนมัติ
+                        delay: 300, // หน่วงเวลา 300ms
+                        select: function(event, ui) {
+                            // เมื่อเลือกชื่อแล้ว
+                            console.log('👤 Selected employee:', ui.item.value);
+                            // รีเซ็ตสีกรอบเป็นปกติ
+                            const employeeInput = document.getElementById("employee");
+                            employeeInput.style.borderColor = '';
+                            employeeInput.style.boxShadow = '';
+                        },
+                        search: function(event, ui) {
+                            console.log('🔍 Searching for:', this.value);
+                        },
+                        response: function(event, ui) {
+                            console.log('📋 Search results:', ui.content.length, 'items');
+                        }
+                    });
+                    
+                    console.log('✅ Autocomplete initialized successfully');
+                    
+                    // ทดสอบ Autocomplete
+                    const testInput = $("#employee");
+                    if (testInput.length > 0) {
+                        console.log('✅ Employee input field found');
+                    } else {
+                        console.error('❌ Employee input field not found');
+                    }
+                    
+                } else {
+                    throw new Error(data.error || 'Invalid employee data format');
+                }
+
+            } catch (error) {
+                console.error('❌ Failed to load employees:', error);
+                $('#message').html('⚠️ ไม่สามารถโหลดรายชื่อพนักงานได้: ' + error.message);
+                document.getElementById("message").className = "alert alert-warning";
+                  // ลองใช้ข้อมูลตัวอย่างถ้าโหลดไม่ได้
+                console.log('🔄 Using sample employee data for testing...');
+                const sampleEmployees = [
+                    'นายสมชาย ใจดี',
+                    'นางสาวสมใส รักงาน', 
+                    'นายวิชัย ขยันดี',
+                    'นางมณี สุภาพ',
+                    'นายกิตติ มั่นใจ'
+                ];
+                
+                // เก็บข้อมูลตัวอย่างสำหรับการตรวจสอบ
+                validEmployees = [...sampleEmployees];
+                isEmployeeListLoaded = true;
+                
+                $("#employee").autocomplete({
+                    source: sampleEmployees,
+                    minLength: 1,
+                    maxShowItems: 5,
+                    autoFocus: true,
+                    select: function(event, ui) {
+                        console.log('👤 Selected sample employee:', ui.item.value);
+                        // รีเซ็ตสีกรอบเป็นปกติ
+                        const employeeInput = document.getElementById("employee");
+                        employeeInput.style.borderColor = '';
+                        employeeInput.style.boxShadow = '';
+                    }
+                });
+                
+                console.log('✅ Sample autocomplete initialized with validation');
+                console.log('✅ Valid employees list updated with samples:', validEmployees.length, 'entries');
+            }
+        }
+
+        function clearForm() {
+            setTimeout(function () {
+                document.getElementById('message').innerText = owner;
+                document.getElementById("message").className = "alert msgBg";
+                document.getElementById("myForm").reset();
+            }, 5000);
+        }
+
+        /** จาวาสคริปต์ นาฬิกาดิจิตอล **/
+        function showTime() {
+            var date = new Date();
+            var h = date.getHours();
+            var m = date.getMinutes();
+            var s = date.getSeconds();
+            var dot = document.textContent = '.';
+
+            if (s % 2 == 1) {
+                dot = document.textContent = '.';
+            } else {
+                dot = document.textContent = '\xa0';
+            }
+
+            h = h < 10 ? "0" + h : h;
+            m = m < 10 ? "0" + m : m;
+            s = s < 10 ? "0" + s : s;
+
+            var time = h + ":" + m + ":" + s + '' + dot;
+            document.getElementById("MyClockDisplay").innerText = time;
+            document.getElementById("MyClockDisplay").textContent = time;
+
+            setTimeout(showTime, 1000);
+        }
+
+        // เริ่มต้นการทำงาน
+        showTime();
+        
+        // ตรวจสอบการเชื่อมต่อทุก 30 วินาที
+        setInterval(checkServerConnection, 30000);
+
+        // ล้างทรัพยากร GPS เมื่อปิดหน้า
+        window.addEventListener('beforeunload', function() {
+            if (gpsWatchId) {
+                navigator.geolocation.clearWatch(gpsWatchId);
+            }
+        });        // Privacy Policy Functions
+        function initPrivacyPolicy() {
+            console.log('🔒 Initializing Privacy Policy...');
+            
+            const privacyModal = document.getElementById('privacyModal');
+            const acceptBtn = document.getElementById('acceptPrivacy');
+            const declineBtn = document.getElementById('declinePrivacy');
+            const consentCheckbox = document.getElementById('privacyConsent');
+            
+            // ตรวจสอบ consent ที่เก็บไว้
+            const hasConsent = localStorage.getItem('privacyConsent');
+            const consentDate = localStorage.getItem('privacyConsentDate');
+            
+            // ตรวจสอบว่า consent หมดอายุหรือไม่ (30 วัน)
+            const isConsentExpired = consentDate && 
+                (Date.now() - parseInt(consentDate)) > (30 * 24 * 60 * 60 * 1000);
+            
+            console.log('🔒 Privacy consent status:', { hasConsent, consentDate, isConsentExpired });
+            
+            // แสดง modal หากยังไม่ได้ consent หรือ consent หมดอายุ
+            if (!hasConsent || isConsentExpired) {
+                console.log('🔒 Showing privacy policy modal...');
+                
+                // แสดง modal ทันที
+                setTimeout(() => {
+                    privacyModal.style.display = 'block';
+                    
+                    // เพิ่ม backdrop สำหรับป้องกันการคลิกข้างนอก
+                    privacyModal.style.zIndex = '99999';
+                    
+                    // แสดงข้อความแจ้งเตือนเพิ่มเติม
+                    const alertMessage = document.createElement('div');
+                    alertMessage.innerHTML = `
+                        <div style="background: #fff3cd; border: 1px solid #ffeeba; padding: 10px; margin-bottom: 15px; border-radius: 5px; color: #856404;">
+                            <strong>📢 หมายเหตุสำคัญ:</strong> กรุณาอ่านนโยบายความเป็นส่วนตัวและยอมรับเพื่อใช้งานระบบลงเวลา
+                        </div>
+                    `;
+                    
+                    const privacyContent = document.querySelector('#privacyModal .privacy-content');
+                    privacyContent.insertBefore(alertMessage, privacyContent.firstChild);
+                }, 100);
+                
+                // ปิดใช้งานฟอร์มจนกว่าจะได้ consent
+                const form = document.getElementById('myForm');
+                if (form) {
+                    form.style.pointerEvents = 'none';
+                    form.style.opacity = '0.5';
+                    form.style.transition = 'all 0.3s ease';
+                }
+                
+                // ปิดใช้งานปุ่ม clock in/out
+                const clockinBtn = document.getElementById('clockin');
+                const clockoutBtn = document.getElementById('clockout');
+                if (clockinBtn) clockinBtn.disabled = true;
+                if (clockoutBtn) clockoutBtn.disabled = true;
+            } else {
+                console.log('✅ Privacy consent already granted');
+            }
+            
+            // เปิดใช้งานปุ่มยอมรับเมื่อติ๊กเครื่องหมาย
+            consentCheckbox.addEventListener('change', function() {
+                acceptBtn.disabled = !this.checked;
+                if (this.checked) {
+                    acceptBtn.style.opacity = '1';
+                    acceptBtn.style.cursor = 'pointer';
+                    acceptBtn.style.background = 'linear-gradient(135deg, #27ae60, #2ecc71)';
+                } else {
+                    acceptBtn.style.opacity = '0.6';
+                    acceptBtn.style.cursor = 'not-allowed';
+                    acceptBtn.style.background = '#95a5a6';
+                }
+            });
+            
+            // จัดการเมื่อยอมรับ
+            acceptBtn.addEventListener('click', function() {
+                if (consentCheckbox.checked) {
+                    console.log('✅ Privacy policy accepted');
+                    
+                    // บันทึก consent
+                    localStorage.setItem('privacyConsent', 'true');
+                    localStorage.setItem('privacyConsentDate', Date.now().toString());
+                    localStorage.setItem('privacyVersion', '1.0'); // เวอร์ชันของนโยบาย
+                    
+                    // ปิด modal พร้อมเอฟเฟกต์
+                    privacyModal.style.transition = 'opacity 0.3s ease';
+                    privacyModal.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        privacyModal.style.display = 'none';
+                        privacyModal.style.opacity = '1';
+                    }, 300);
+                    
+                    // เปิดใช้งานฟอร์ม
+                    const form = document.getElementById('myForm');
+                    if (form) {
+                        form.style.pointerEvents = 'auto';
+                        form.style.opacity = '1';
+                    }
+                    
+                    // เปิดใช้งานปุ่ม clock in/out
+                    const clockinBtn = document.getElementById('clockin');
+                    const clockoutBtn = document.getElementById('clockout');
+                    if (clockinBtn) clockinBtn.disabled = false;
+                    if (clockoutBtn) clockoutBtn.disabled = false;
+                    
+                    // แสดงข้อความแจ้งเตือน
+                    Swal.fire({
+                        icon: 'success',
+                        title: '✅ ยอมรับนโยบายเรียบร้อย',
+                        html: `
+                            <p>ขอบคุณที่ยอมรับนโยบายความเป็นส่วนตัว</p>
+                            <p><strong>🎉 ตอนนี้ท่านสามารถใช้งานระบบลงเวลาได้แล้ว</strong></p>
+                        `,
+                        confirmButtonText: '🚀 เริ่มใช้งาน',
+                        confirmButtonColor: '#27ae60',
+                        timer: 3000,
+                        timerProgressBar: true
+                    });
+                } else {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '⚠️ กรุณาอ่านและยอมรับ',
+                        text: 'กรุณาติ๊กเครื่องหมายเพื่อยอมรับนโยบายก่อนดำเนินการต่อ',
+                        confirmButtonText: 'เข้าใจแล้ว',
+                        confirmButtonColor: '#f39c12'
+                    });
+                }
+            });
+            
+            // จัดการเมื่อไม่ยอมรับ
+            declineBtn.addEventListener('click', function() {
+                Swal.fire({
+                    icon: 'question',
+                    title: '❌ ไม่ยอมรับนโยบาย?',
+                    html: `
+                        <p>หากท่านไม่ยอมรับนโยบายความเป็นส่วนตัว</p>
+                        <p><strong>จะไม่สามารถใช้งานระบบลงเวลาได้</strong></p>
+                        <br>
+                        <p>ท่านต้องการ:</p>
+                    `,
+                    showCancelButton: true,
+                    confirmButtonText: '📖 อ่านนโยบายอีกครั้ง',
+                    cancelButtonText: '🚪 ออกจากระบบ',
+                    confirmButtonColor: '#3498db',
+                    cancelButtonColor: '#e74c3c'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // ให้อ่านนโยบายอีกครั้ง
+                        console.log('📖 User wants to read policy again');
+                        // ไม่ปิด modal ให้อ่านต่อ
+                    } else if (result.isDismissed) {
+                        // ออกจากระบบ
+                        console.log('🚪 User declined and wants to exit');
+                        
+                        // ล้างข้อมูล consent
+                        localStorage.removeItem('privacyConsent');
+                        localStorage.removeItem('privacyConsentDate');
+                        localStorage.removeItem('privacyVersion');
+                        
+                        // แสดงข้อความอำลา
+                        Swal.fire({
+                            icon: 'info',
+                            title: '👋 ขอบคุณที่เข้าชม',
+                            text: 'หากเปลี่ยนใจ สามารถกลับมาใช้งานได้ตลอดเวลา',
+                            confirmButtonText: 'ตกลง',
+                            confirmButtonColor: '#95a5a6'
+                        }).then(() => {
+                            // ปิดหน้าต่าง
+                            window.close();
+                        });
+                    }
+                });
+            });
+        }
+
+        // ฟังก์ชันแสดงนโยบายอีกครั้ง (สำหรับปุ่ม "ดูนโยบาย")
+        function showPrivacyPolicy() {
+            const privacyModal = document.getElementById('privacyModal');
+            privacyModal.style.display = 'block';
+            
+            // ซ่อนปุ่มและ checkbox เพราะแสดงเพื่อดูข้อมูลเท่านั้น
+            const buttons = document.querySelector('#privacyModal .privacy-buttons');
+            const checkbox = document.querySelector('#privacyModal .consent-checkbox');
+            
+            buttons.innerHTML = `
+                <button class="privacy-btn accept" onclick="document.getElementById('privacyModal').style.display='none'">
+                    ✅ ปิด
+                </button>
+            `;
+            
+            checkbox.style.display = 'none';
+        }
+
+        // ฟังก์ชันแสดง Terms of Service
+        function showTermsOfService() {
+            const termsModal = document.getElementById('termsModal');
+            termsModal.style.display = 'block';
+            
+            console.log('📋 Terms of Service opened');
+        }
+
+        // ฟังก์ชันแสดง Google Ads Policy - DISABLED
+        function showAdsPolicy() {
+            console.log('📺 Google Ads Policy disabled');
+            
+            // แสดงข้อความแจ้งให้ทราบว่าโฆษณาถูกปิด
+            Swal.fire({
+                title: '📺 ข้อมูลเกี่ยวกับโฆษณา',
+                text: 'ขณะนี้ระบบได้ปิดการแสดงโฆษณาแล้ว เพื่อประสบการณ์การใช้งานที่ดีขึ้น',
+                icon: 'info',
+                confirmButtonText: 'เข้าใจแล้ว'
+            });
+        }
+
+        // ปิด modals เมื่อคลิกนอกพื้นที่
+        window.addEventListener('click', function(event) {
+            // const adModal = document.getElementById('adModal'); // DISABLED
+            const privacyModal = document.getElementById('privacyModal');
+            const termsModal = document.getElementById('termsModal');
+            // const adsModalPolicy = document.getElementById('adsModal'); // DISABLED
+            
+            // ปิด Ad Modal (โฆษณา) - DISABLED
+            /*
+            if (event.target === adModal && adTimeRemaining <= 0) {
+                closeAdModal();
+            }
+            */
+            
+            // ปิด Privacy Modal
+            if (event.target === privacyModal) {
+                // ตรวจสอบว่าเป็นการดูเฉพาะหรือต้องยอมรับ
+                const hasConsent = localStorage.getItem('privacyConsent');
+                if (hasConsent) {
+                    // มี consent แล้ว ปิดได้เลย
+                    privacyModal.style.display = 'none';
+                } else {
+                    // ยังไม่มี consent แสดงการเตือน
+                    Swal.fire({
+                        icon: 'warning',
+                        title: '⚠️ จำเป็นต้องยอมรับ',
+                        text: 'กรุณาอ่านและยอมรับนโยบายเพื่อใช้งานระบบ',
+                        confirmButtonText: 'ตกลง',
+                        confirmButtonColor: '#f39c12'
+                    });
+                }
+            }
+            
+            // ปิด Terms Modal
+            if (event.target === termsModal) {
+                termsModal.style.display = 'none';
+            }
+            
+            // ปิด Ads Policy Modal - DISABLED
+            /*
+            if (event.target === adsModalPolicy) {
+                adsModalPolicy.style.display = 'none';
+            }
+            */
+        });        // เริ่มต้นระบบ Privacy Policy - ปิดใช้งาน
+        // document.addEventListener('DOMContentLoaded', function() {
+        //     initPrivacyPolicy();
+        // });
+
+        // // เริ่มต้น Privacy Policy ทันทีถ้า DOM พร้อมแล้ว
+        // if (document.readyState === 'loading') {
+        //     document.addEventListener('DOMContentLoaded', initPrivacyPolicy);
+        // } else {
+        //     initPrivacyPolicy();
+        // }
+    </script>
+    
+    <!-- LIFF SDK (สำหรับ LINE) -->
+    <script charset="utf-8" src="https://static.line-scdn.net/liff/edge/2/sdk.js"></script>
+    
+    <!-- PWA Service Worker Registration -->
+    <script>
+        // Register Service Worker for PWA
+        if ('serviceWorker' in navigator) {
+            window.addEventListener('load', function() {
+                navigator.serviceWorker.register('/sw.js')
+                .then(function(registration) {
+                    console.log('✅ ServiceWorker registered successfully:', registration.scope);
+                    
+                    // Check for updates
+                    registration.addEventListener('updatefound', () => {
+                        const newWorker = registration.installing;
+                        newWorker.addEventListener('statechange', () => {
+                            if (newWorker.state === 'installed' && navigator.serviceWorker.controller) {
+                                // New content is available
+                                if (confirm('มีการอัปเดตใหม่ ต้องการรีเฟรชหน้าเว็บไหม?')) {
+                                    window.location.reload();
+                                }
+                            }
+                        });
+                    });
+                })
+                .catch(function(err) {
+                    console.log('❌ ServiceWorker registration failed:', err);
+                });
+            });
+        }
+
+        // PWA Install Prompt
+        let deferredPrompt;
+        const installButton = document.getElementById('installButton');
+
+        window.addEventListener('beforeinstallprompt', (e) => {
+            console.log('📱 PWA install prompt triggered');
+            e.preventDefault();
+            deferredPrompt = e;
+            
+            // Show install button
+            if (installButton) {
+                installButton.style.display = 'block';
+            } else {
+                // Create install banner if button doesn't exist
+                showInstallBanner();
+            }
+        });
+
+        function showInstallBanner() {
+            const banner = document.createElement('div');
+            banner.innerHTML = `
+                <div class="alert alert-info alert-dismissible fade show position-fixed" 
+                     style="top: 10px; right: 10px; z-index: 9999; max-width: 300px;">
+                    <strong>📱 ติดตั้งแอป</strong><br>
+                    ติดตั้งระบบลงเวลาลงมือถือเพื่อใช้งานง่ายขึ้น
+                    <button type="button" class="btn btn-sm btn-primary ms-2" onclick="installPWA()">
+                        ติดตั้ง
+                    </button>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                </div>
+            `;
+            document.body.appendChild(banner);
+            
+            // Auto hide after 10 seconds
+            setTimeout(() => {
+                const alert = banner.querySelector('.alert');
+                if (alert) {
+                    alert.remove();
+                }
+            }, 10000);
+        }
+
+        function installPWA() {
+            if (deferredPrompt) {
+                deferredPrompt.prompt();
+                deferredPrompt.userChoice.then((choiceResult) => {
+                    if (choiceResult.outcome === 'accepted') {
+                        console.log('✅ User accepted the PWA install prompt');
+                        Swal.fire({
+                            icon: 'success',
+                            title: 'ติดตั้งสำเร็จ!',
+                            text: 'แอปได้ถูกติดตั้งลงในมือถือแล้ว',
+                            timer: 3000
+                        });
+                    } else {
+                        console.log('❌ User dismissed the PWA install prompt');
+                    }
+                    deferredPrompt = null;
+                });
+            }
+        }
+
+        // Handle app installation
+        window.addEventListener('appinstalled', (evt) => {
+            console.log('✅ PWA was installed successfully');
+            // Hide install button
+            const installBtn = document.getElementById('installButton');
+            if (installBtn) {
+                installBtn.style.display = 'none';
+            }
+        });
+
+        // Handle PWA launch via shortcut
+        window.addEventListener('load', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const action = urlParams.get('action');
+            
+            if (action === 'clockin') {
+                // Auto trigger clock in
+                setTimeout(() => {
+                    const clockInBtn = document.querySelector('[onclick*="clockIn"]');
+                    if (clockInBtn) {
+                        clockInBtn.click();
+                    }
+                }, 1000);
+            } else if (action === 'clockout') {
+                // Auto trigger clock out
+                setTimeout(() => {
+                    const clockOutBtn = document.querySelector('[onclick*="clockOut"]');
+                    if (clockOutBtn) {
+                        clockOutBtn.click();
+                    }
+                }, 1000);
+            } else if (action === 'status') {
+                // Auto check status
+                setTimeout(() => {
+                    checkCurrentStatus();
+                }, 1000);
+            }
+        });
+    </script>
+</body>
+</html>

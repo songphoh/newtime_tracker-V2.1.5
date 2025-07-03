@@ -1,0 +1,104 @@
+{
+  "name": "ระบบลงเวลาออนไลน์ อบต.ข่าใหญ่",
+  "short_name": "ลงเวลา อบต.ข่าใหญ่",
+  "description": "ระบบจัดการลงเวลาเข้า-ออกงาน องค์การบริหารส่วนตำบลข่าใหญ่ อำเภอเมือง จังหวัดหนองบัวลำภู",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#fafafa",
+  "theme_color": "#1a237e",
+  "orientation": "portrait",
+  "scope": "/",
+  "lang": "th",
+  "categories": ["productivity", "business"],
+  "icons": [
+    {
+      "src": "https://www.huana-nbp.go.th/index/add_file/P0D284NMon35557.png",
+      "sizes": "72x72 96x96 128x128 144x144 152x152 192x192 384x384 512x512",
+      "type": "image/png",
+      "purpose": "maskable any"
+    },
+    {
+      "src": "https://www.huana-nbp.go.th/index/add_file/P0D284NMon35557.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "https://www.huana-nbp.go.th/index/add_file/P0D284NMon35557.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    }
+  ],
+  "screenshots": [
+    {
+      "src": "/screenshots/mobile-1.png",
+      "sizes": "320x568",
+      "type": "image/png",
+      "form_factor": "narrow"
+    },
+    {
+      "src": "/screenshots/desktop-1.png",
+      "sizes": "1280x720",
+      "type": "image/png",
+      "form_factor": "wide"
+    }
+  ],
+  "shortcuts": [
+    {
+      "name": "ลงเวลาเข้า",
+      "short_name": "เข้างาน",
+      "description": "ลงเวลาเข้างานด่วน",
+      "url": "/?action=clockin",
+      "icons": [
+        {
+          "src": "https://www.huana-nbp.go.th/index/add_file/P0D284NMon35557.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "ลงเวลาออก",
+      "short_name": "ออกงาน",
+      "description": "ลงเวลาออกงานด่วน",
+      "url": "/?action=clockout",
+      "icons": [
+        {
+          "src": "https://www.huana-nbp.go.th/index/add_file/P0D284NMon35557.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "ผู้ดูแลระบบ",
+      "short_name": "Admin",
+      "description": "เข้าสู่หน้าผู้ดูแลระบบ",
+      "url": "/admin",
+      "icons": [
+        {
+          "src": "https://www.huana-nbp.go.th/index/add_file/P0D284NMon35557.png",
+          "sizes": "96x96"
+        }
+      ]
+    },
+    {
+      "name": "ตรวจสอบสถานะ",
+      "short_name": "สถานะ",
+      "description": "ดูสถานะการทำงานปัจจุบัน",
+      "url": "/?action=status",
+      "icons": [
+        {
+          "src": "https://www.huana-nbp.go.th/index/add_file/P0D284NMon35557.png",
+          "sizes": "96x96"
+        }
+      ]
+    }
+  ],
+  "prefer_related_applications": false,
+  "related_applications": [],
+  "features": [
+    "Cross Platform",
+    "fast",
+    "simple"
+  ]
+}
